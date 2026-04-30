@@ -496,11 +496,12 @@ function processNewSubmissions() {
 }
 
 // Helper: parse a field value from FormSubmit's table-style email body
+// FormSubmit sends: "Name\tValue\nname\tQian Wang\nemail\t..."
+// Must be case-SENSITIVE so lowercase "name" doesn't match header row "Name → Value"
 function extractField_(body, fieldName) {
-  // FormSubmit sends table: "fieldname\t\nvalue\n"
   var patterns = [
-    new RegExp(fieldName + '\\s+([^\\n\\t]+)', 'i'),
-    new RegExp(fieldName + '[\\s\\S]{0,5}?\\n([^\\n]+)', 'i')
+    new RegExp('\\b' + fieldName + '\\t([^\\n]+)'),          // tab-separated (no 'i' flag)
+    new RegExp('\\b' + fieldName + '\\s{2,}([^\\n\\t]+)')    // 2+ space-separated
   ];
   for (var i = 0; i < patterns.length; i++) {
     var m = body.match(patterns[i]);
