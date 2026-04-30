@@ -18,7 +18,7 @@
 // FormSubmit.co endpoint — sends submissions to leasing@collabhome.io instantly
 // No registration required. First submission triggers an activation email to leasing@.
 // Replace with your GAS URL once Workspace admin enables public web app deployment.
-window.FORM_ENDPOINT = 'https://formsubmit.co/ajax/leasing@collabhome.io';
+window.FORM_ENDPOINT = 'https://formsubmit.co/ajax/752e5b6d930839b5bd9378a19bcf5a22';
 
 // ==========================================
 // NAV SCROLL EFFECT
