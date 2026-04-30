@@ -48,8 +48,8 @@ body { font-family: var(--font); background: var(--dark); color: var(--warm-whit
 .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; transition: background 0.3s ease; }
 .nav.scrolled { background: rgba(21,23,24,0.92); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
 .nav-inner { max-width: 1160px; margin: 0 auto; padding: 18px 24px; display: flex; align-items: center; justify-content: space-between; }
-.nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-.nav-logo-img { height: 40px; width: auto; display: block; }
+.nav-logo { display: flex; align-items: center; gap: 4px; text-decoration: none; }
+.nav-logo-img { height: 16px; width: auto; display: block; }
 .logo-text { font-size: 16px; color: var(--warm-white); font-weight: 600; }
 .logo-text strong { color: var(--primary); }
 .nav-links { display: flex; align-items: center; gap: 28px; }
