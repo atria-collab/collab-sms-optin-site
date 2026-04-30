@@ -435,3 +435,100 @@ function testPost() {
 function testWeeklyReport() {
   sendWeeklyReport();
 }
+
+// ============================================================
+// GMAIL TRIGGER: Auto-reply to sweepstakes submitters
+// ============================================================
+// Run this on a time-driven trigger (every 5-10 minutes).
+// Watches leasing@collabhome.io for FormSubmit submission emails,
+// sends an ack email to the submitter, then labels/archives.
+// No web app access required — runs entirely internally.
+
+function processNewSubmissions() {
+  var label = getOrCreateLabel_('FormSubmit/Processed');
+  var threads = GmailApp.search(
+    'from:submissions@formsubmit.co subject:"You\'re entered" -label:FormSubmit/Processed',
+    0, 20
+  );
+
+  threads.forEach(function(thread) {
+    var msgs = thread.getMessages();
+    var body = msgs[0].getPlainBody();
+
+    // Parse name and email from the table FormSubmit sends
+    var name  = extractField_(body, 'name')  || 'there';
+    var email = extractField_(body, 'email') || '';
+
+    if (!email || !email.includes('@')) {
+      Logger.log('Could not parse email from submission, skipping');
+      thread.addLabel(label);
+      return;
+    }
+
+    // Send ack email
+    MailApp.sendEmail({
+      to: email,
+      replyTo: CONFIG.REPORT_EMAIL,
+      name: CONFIG.FROM_NAME,
+      subject: 'You\'re entered! Collab AI Leasing Assistant Sweepstakes 🎉',
+      body: [
+        'Hi ' + name + ',',
+        '',
+        'Thank you for entering the Collab AI Leasing Assistant sweepstakes! 🎉',
+        '',
+        'Your entry has been confirmed. We\'ll announce the winner soon.',
+        '',
+        'In the meantime, learn more about how Collab AI guides renters through every',
+        'step of their rental journey — from search to deposit return:',
+        CONFIG.SITE_URL,
+        '',
+        'Best,',
+        'Collab AI Leasing Team',
+        'leasing@collabhome.io'
+      ].join('\n')
+    });
+
+    Logger.log('Sent ack to: ' + email + ' (' + name + ')');
+
+    // Label as processed so we don't send twice
+    thread.addLabel(label);
+  });
+}
+
+// Helper: parse a field value from FormSubmit's table-style email body
+function extractField_(body, fieldName) {
+  // FormSubmit sends table: "fieldname\t\nvalue\n"
+  var patterns = [
+    new RegExp(fieldName + '\\s+([^\\n\\t]+)', 'i'),
+    new RegExp(fieldName + '[\\s\\S]{0,5}?\\n([^\\n]+)', 'i')
+  ];
+  for (var i = 0; i < patterns.length; i++) {
+    var m = body.match(patterns[i]);
+    if (m && m[1] && m[1].trim()) return m[1].trim();
+  }
+  return '';
+}
+
+// Helper: get or create a Gmail label
+function getOrCreateLabel_(labelName) {
+  var label = GmailApp.getUserLabelByName(labelName);
+  if (!label) {
+    label = GmailApp.createLabel(labelName);
+  }
+  return label;
+}
+
+// One-time setup: create the trigger that runs processNewSubmissions every 10 min
+function setupAckTrigger() {
+  // Remove existing ack triggers to avoid duplicates
+  ScriptApp.getProjectTriggers().forEach(function(t) {
+    if (t.getHandlerFunction() === 'processNewSubmissions') {
+      ScriptApp.deleteTrigger(t);
+    }
+  });
+  ScriptApp.newTrigger('processNewSubmissions')
+    .timeBased()
+    .everyMinutes(10)
+    .create();
+  Logger.log('Ack trigger created: processNewSubmissions every 10 min');
+}
