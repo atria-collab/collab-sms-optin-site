@@ -255,6 +255,10 @@ function initForm() {
         formData.append('_subject', 'New Sweepstakes Entry: ' + data.name);
         formData.append('_captcha', 'false'); // we use Turnstile
         formData.append('_template', 'table');
+        formData.append('_replyto', data.email); // send confirmation to submitter
+        formData.append('_autoresponse',
+          `Hi ${data.name},\n\nThank you for entering the Collab AI Leasing Assistant sweepstakes! 🎉\n\nYou're officially entered. We'll announce the winner soon.\n\nMeanwhile, learn more about how Collab AI helps renters navigate every step of their rental journey at https://atria-collab.github.io/collab-sms-optin-site/collab-ai-leasing-assistant/\n\nBest,\nThe Collab AI Team\nleasing@collabhome.io`
+        );
 
         await fetch(window.FORM_ENDPOINT, {
           method: 'POST',
