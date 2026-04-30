@@ -10,15 +10,16 @@
   <meta property="og:type" content="website">
   <link rel="canonical" href="https://atria-collab.github.io/collab-sms-optin-site/collab-ai-leasing-assistant/">
   <link rel="stylesheet" href="css/style.css">
-  <!-- Google Analytics — replace UA-XXXXX with your tracking ID
-  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXX"></script>
+  <!-- Google Analytics GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-326CMY07W8"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-    gtag('config', 'UA-XXXXX');
+    gtag('config', 'G-326CMY07W8');
   </script>
-  -->
+  <!-- Cloudflare Turnstile -->
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body>
 
@@ -420,8 +421,8 @@
 
           <!-- Cloudflare Turnstile — replace sitekey with your actual key -->
           <div class="cf-turnstile-wrap">
-            <!-- <div class="cf-turnstile" data-sitekey="0x4AAAAAAA" data-theme="dark"></div> -->
-            <!-- Uncomment above and add Turnstile script: <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script> -->
+            <!-- TODO: Replace test sitekey with production key from Cloudflare dashboard -->
+            <div class="cf-turnstile" data-sitekey="1x00000000000000000000AA" data-theme="dark"></div>
           </div>
 
           <button type="submit" class="form-submit-btn" id="form-submit-btn">🎉 Enter Sweepstakes</button>

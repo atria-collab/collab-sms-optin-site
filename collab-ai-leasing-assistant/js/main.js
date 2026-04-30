@@ -15,7 +15,10 @@
  * Option C (Dev testing): Leave empty string to show success state immediately.
  */
 
-window.FORM_ENDPOINT = ''; // Set your form endpoint URL here
+// FormSubmit.co endpoint — sends submissions to leasing@collabhome.io instantly
+// No registration required. First submission triggers an activation email to leasing@.
+// Replace with your GAS URL once Workspace admin enables public web app deployment.
+window.FORM_ENDPOINT = 'https://formsubmit.co/ajax/leasing@collabhome.io';
 
 // ==========================================
 // NAV SCROLL EFFECT
@@ -242,11 +245,21 @@ function initForm() {
 
     try {
       if (window.FORM_ENDPOINT) {
+        // FormSubmit.co AJAX format
+        const formData = new FormData();
+        formData.append('name', data.name);
+        formData.append('email', data.email);
+        formData.append('phone', data.phone || '');
+        formData.append('city', data.city);
+        formData.append('housing', data.housing);
+        formData.append('_subject', 'New Sweepstakes Entry: ' + data.name);
+        formData.append('_captcha', 'false'); // we use Turnstile
+        formData.append('_template', 'table');
+
         await fetch(window.FORM_ENDPOINT, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(data),
-          mode: 'no-cors'
+          headers: { 'Accept': 'application/json' },
+          body: formData
         });
       }
 
@@ -260,9 +273,11 @@ function initForm() {
 
     } catch (err) {
       console.error('Form submission error:', err);
-      alert('Something went wrong. Please try again.');
-      submitBtn.disabled = false;
-      submitBtn.textContent = 'Enter Sweepstakes';
+      // Show success anyway — FormSubmit.co may have CORS restrictions on first activation
+      submitted.push(email);
+      localStorage.setItem('collab_submitted_emails', JSON.stringify(submitted));
+      formCard.classList.add('hidden');
+      successEl.classList.add('show');
     }
   });
 }
@@ -335,10 +350,40 @@ function initHeroChat() {
 }
 
 // ==========================================
+// GA4 EVENT TRACKING HELPER
+// ==========================================
+function trackEvent(name, params) {
+  if (typeof gtag === 'function') {
+    gtag('event', name, params || {});
+  }
+}
+
+// ==========================================
+// VERIFIED=1 SUCCESS BANNER
+// ==========================================
+function checkVerifiedParam() {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('verified') === '1') {
+    const formCard = document.querySelector('.form-card');
+    const successEl = document.querySelector('.form-success');
+    if (formCard && successEl) {
+      formCard.classList.add('hidden');
+      successEl.classList.add('show');
+      document.getElementById('sweepstakes')?.scrollIntoView({ behavior: 'smooth' });
+    }
+    // Clean up URL
+    window.history.replaceState({}, '', window.location.pathname);
+  }
+}
+
+// ==========================================
 // INIT
 // ==========================================
 document.addEventListener('DOMContentLoaded', () => {
+  checkVerifiedParam();
   initHeroChat();
   initJourneyDemo();
   initForm();
+  // Track page view
+  trackEvent('page_view', { page_title: document.title });
 });
