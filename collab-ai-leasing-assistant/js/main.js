@@ -18,7 +18,9 @@
 // FormSubmit.co endpoint — sends submissions to leasing@collabhome.io instantly
 // No registration required. First submission triggers an activation email to leasing@.
 // Replace with your GAS URL once Workspace admin enables public web app deployment.
-window.FORM_ENDPOINT = 'https://formsubmit.co/ajax/752e5b6d930839b5bd9378a19bcf5a22';
+// FormSubmit.co — using standard POST (not AJAX) so _autoresponse fires reliably
+// The form submits natively and _next redirects back to the site with ?submitted=1
+window.FORM_ENDPOINT = 'https://formsubmit.co/752e5b6d930839b5bd9378a19bcf5a22';
 
 // ==========================================
 // NAV SCROLL EFFECT
@@ -244,42 +246,54 @@ function initForm() {
     };
 
     try {
-      if (window.FORM_ENDPOINT) {
-        // FormSubmit.co AJAX format
-        const formData = new FormData();
-        formData.append('name', data.name);
-        formData.append('email', data.email);
-        formData.append('phone', data.phone || '');
-        formData.append('city', data.city);
-        formData.append('housing', data.housing);
-        formData.append('_subject', 'New Sweepstakes Entry: ' + data.name);
-        formData.append('_captcha', 'false'); // we use Turnstile
-        formData.append('_template', 'table');
-        formData.append('_replyto', data.email); // send confirmation to submitter
-        formData.append('_autoresponse',
-          `Hi ${data.name},\n\nThank you for entering the Collab AI Leasing Assistant sweepstakes! 🎉\n\nYou're officially entered. We'll announce the winner soon.\n\nMeanwhile, learn more about how Collab AI helps renters navigate every step of their rental journey at https://atria-collab.github.io/collab-sms-optin-site/collab-ai-leasing-assistant/\n\nBest,\nThe Collab AI Team\nleasing@collabhome.io`
-        );
-
-        await fetch(window.FORM_ENDPOINT, {
-          method: 'POST',
-          headers: { 'Accept': 'application/json' },
-          body: formData
-        });
-      }
-
-      // Save to localStorage
+      // Save to localStorage first (before redirect)
       submitted.push(email);
       localStorage.setItem('collab_submitted_emails', JSON.stringify(submitted));
 
-      // Show success
+      if (window.FORM_ENDPOINT) {
+        // Use hidden native <form> POST so FormSubmit.co _autoresponse fires reliably
+        // AJAX mode suppresses the auto-reply; standard POST triggers it every time.
+        const siteUrl = 'https://atria-collab.github.io/collab-sms-optin-site/collab-ai-leasing-assistant/';
+        const ackMsg = `Hi ${data.name},\n\nThank you for entering the Collab AI Leasing Assistant sweepstakes! 🎉\n\nYour entry is confirmed. We'll announce the winner soon.\n\nLearn more: ${siteUrl}\n\nBest,\nCollab AI Leasing Team\nleasing@collabhome.io`;
+
+        const hiddenForm = document.createElement('form');
+        hiddenForm.method = 'POST';
+        hiddenForm.action = window.FORM_ENDPOINT;
+        hiddenForm.style.display = 'none';
+
+        const fields = {
+          name: data.name,
+          email: data.email,
+          phone: data.phone || '',
+          city: data.city,
+          housing: data.housing,
+          _subject: 'You\'re entered! Collab AI Leasing Assistant Sweepstakes 🎉',
+          _captcha: 'false',
+          _template: 'table',
+          _replyto: data.email,
+          _autoresponse: ackMsg,
+          _next: siteUrl + '?submitted=1'
+        };
+
+        Object.entries(fields).forEach(([k, v]) => {
+          const inp = document.createElement('input');
+          inp.type = 'hidden';
+          inp.name = k;
+          inp.value = v;
+          hiddenForm.appendChild(inp);
+        });
+
+        document.body.appendChild(hiddenForm);
+        hiddenForm.submit(); // page will redirect → ?submitted=1
+        return; // don't show inline success (redirect handles it)
+      }
+
+      // Fallback (no endpoint set): show inline success
       formCard.classList.add('hidden');
       successEl.classList.add('show');
 
     } catch (err) {
       console.error('Form submission error:', err);
-      // Show success anyway — FormSubmit.co may have CORS restrictions on first activation
-      submitted.push(email);
-      localStorage.setItem('collab_submitted_emails', JSON.stringify(submitted));
       formCard.classList.add('hidden');
       successEl.classList.add('show');
     }
@@ -367,7 +381,8 @@ function trackEvent(name, params) {
 // ==========================================
 function checkVerifiedParam() {
   const params = new URLSearchParams(window.location.search);
-  if (params.get('verified') === '1') {
+  // Handle both ?verified=1 (email verify) and ?submitted=1 (form redirect from FormSubmit)
+  if (params.get('verified') === '1' || params.get('submitted') === '1') {
     const formCard = document.querySelector('.form-card');
     const successEl = document.querySelector('.form-success');
     if (formCard && successEl) {
@@ -376,7 +391,7 @@ function checkVerifiedParam() {
       document.getElementById('sweepstakes')?.scrollIntoView({ behavior: 'smooth' });
     }
     // Clean up URL
-    window.history.replaceState({}, '', window.location.pathname);
+    window.history.replaceState({}, '', window.location.pathname + '#sweepstakes');
   }
 }
 
