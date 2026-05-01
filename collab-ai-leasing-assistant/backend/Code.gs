@@ -465,27 +465,39 @@ function processNewSubmissions() {
       return;
     }
 
-    // Send ack email
+    // Send ack email (HTML for better deliverability)
+    var firstName = name !== 'there' ? name.split(' ')[0] : 'there';
+    var ackSubject = 'You\'re entered! Collab AI Leasing Assistant Sweepstakes 🎉';
+    var ackHtml =
+      '<!DOCTYPE html><html><body style="margin:0;padding:0;font-family:Arial,sans-serif;background:#f4f4f4;">' +
+      '<div style="max-width:560px;margin:40px auto;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.1);">' +
+      '<div style="background:linear-gradient(135deg,#0d1117,#1a2a2a);padding:32px 40px;text-align:center;">' +
+      '<div style="font-size:42px;margin-bottom:12px;">🎉</div>' +
+      '<h1 style="color:#fff;font-size:22px;margin:0;font-weight:700;">You\'re entered!</h1>' +
+      '<p style="color:#00BFA5;font-size:14px;margin:8px 0 0;">Collab AI Leasing Assistant Sweepstakes</p>' +
+      '</div>' +
+      '<div style="padding:36px 40px;">' +
+      '<h2 style="font-size:20px;color:#1a1a1a;margin:0 0 16px;">Hi ' + firstName + '! 👋</h2>' +
+      '<p style="color:#555;font-size:15px;line-height:1.6;margin:0 0 20px;">Thank you for entering the <strong>Collab AI Leasing Assistant Sweepstakes</strong>! Your entry has been confirmed — you\'re in the running.</p>' +
+      '<div style="background:linear-gradient(135deg,rgba(0,191,165,0.08),rgba(37,211,102,0.05));border:1px solid rgba(0,191,165,0.3);border-radius:10px;padding:20px;margin:20px 0;">' +
+      '<p style="font-size:14px;font-weight:700;color:#00BFA5;margin:0 0 8px;">🏆 What you could win:</p>' +
+      '<p style="font-size:14px;color:#555;margin:0;">First <strong>200 winners</strong> get 3 months of Collab AI for <strong>$1</strong> — full access to all 12 stages of the renter journey.</p>' +
+      '</div>' +
+      '<p style="color:#555;font-size:14px;line-height:1.6;margin:0 0 24px;">We\'ll notify you as the launch gets closer. <a href="' + CONFIG.SITE_URL + '" style="color:#00BFA5;font-weight:700;">Learn more about Collab AI →</a></p>' +
+      '<hr style="border:none;border-top:1px solid #eee;margin:24px 0;">' +
+      '<p style="color:#999;font-size:12px;margin:0;">Questions? Reply to this email or reach us at <a href="mailto:leasing@collabhome.io" style="color:#00BFA5;">leasing@collabhome.io</a></p>' +
+      '</div>' +
+      '<div style="background:#f8f9fa;padding:16px 40px;text-align:center;border-top:1px solid #eee;">' +
+      '<p style="color:#aaa;font-size:11px;margin:0;">&copy; 2025 Collab Home · We never sell your data · <a href="' + CONFIG.SITE_URL + 'privacy.html" style="color:#aaa;">Privacy Policy</a></p>' +
+      '</div>' +
+      '</div></body></html>';
+
     MailApp.sendEmail({
       to: email,
       replyTo: CONFIG.REPORT_EMAIL,
       name: CONFIG.FROM_NAME,
-      subject: 'You\'re entered! Collab AI Leasing Assistant Sweepstakes 🎉',
-      body: [
-        'Hi ' + name + ',',
-        '',
-        'Thank you for entering the Collab AI Leasing Assistant sweepstakes! 🎉',
-        '',
-        'Your entry has been confirmed. We\'ll announce the winner soon.',
-        '',
-        'In the meantime, learn more about how Collab AI guides renters through every',
-        'step of their rental journey — from search to deposit return:',
-        CONFIG.SITE_URL,
-        '',
-        'Best,',
-        'Collab AI Leasing Team',
-        'leasing@collabhome.io'
-      ].join('\n')
+      subject: ackSubject,
+      htmlBody: ackHtml
     });
 
     Logger.log('Sent ack to: ' + email + ' (' + name + ')');
@@ -532,4 +544,43 @@ function setupAckTrigger() {
     .everyMinutes(10)
     .create();
   Logger.log('Ack trigger created: processNewSubmissions every 10 min');
+}
+
+// ============================================================
+// CLEAN TEST DATA
+// Removes FormSubmit/Processed label from all FormSubmit threads
+// and clears all rows from the Google Sheet (keeps header).
+// Run manually to reset for re-testing.
+// ============================================================
+function cleanTestData() {
+  // 1. Remove FormSubmit/Processed label from all threads
+  var label = GmailApp.getUserLabelByName('FormSubmit/Processed');
+  if (label) {
+    var threads = GmailApp.search('label:FormSubmit/Processed', 0, 50);
+    threads.forEach(function(t) { t.removeLabel(label); });
+    Logger.log('Removed FormSubmit/Processed label from ' + threads.length + ' threads');
+  } else {
+    Logger.log('No FormSubmit/Processed label found');
+  }
+
+  // 2. Clear all data rows from the sheet (keep header row)
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  if (!ss) {
+    var files = DriveApp.getFilesByName(CONFIG.SPREADSHEET_NAME);
+    if (files.hasNext()) ss = SpreadsheetApp.open(files.next());
+  }
+  if (ss) {
+    var sheet = ss.getSheetByName(CONFIG.SHEET_NAME) || ss.getActiveSheet();
+    var lastRow = sheet.getLastRow();
+    if (lastRow > 1) {
+      sheet.deleteRows(2, lastRow - 1);
+      Logger.log('Cleared ' + (lastRow - 1) + ' data rows from sheet');
+    } else {
+      Logger.log('Sheet already empty');
+    }
+  } else {
+    Logger.log('Spreadsheet not found');
+  }
+
+  Logger.log('Clean complete — ready for re-testing');
 }
