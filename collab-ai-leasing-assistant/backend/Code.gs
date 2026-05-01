@@ -447,7 +447,7 @@ function testWeeklyReport() {
 function processNewSubmissions() {
   var label = getOrCreateLabel_('FormSubmit/Processed');
   var threads = GmailApp.search(
-    'in:all from:submissions@formsubmit.co -label:FormSubmit/Processed',
+    'in:all from:submissions@formsubmit.co -label:FormSubmit/Processed newer_than:2d',
     0, 20
   );
 
