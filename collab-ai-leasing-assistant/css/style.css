@@ -229,7 +229,7 @@ body { font-family: var(--font); background: var(--dark); color: var(--warm-whit
 .form-check-text { font-size: 13px; color: var(--muted); line-height: 1.5; }
 .form-check-text a { color: var(--primary); text-decoration: none; }
 .form-check-text a:hover { text-decoration: underline; }
-.cf-turnstile-wrap { margin: 20px 0; }
+.cf-turnstile-wrap { margin: 20px 0; display: flex; justify-content: center; }
 .no-purchase { font-size: 12px; color: var(--muted); text-align: center; margin-top: 14px; }
 .form-submit-btn { background: var(--primary); color: #fff; border: none; border-radius: 10px; padding: 16px 32px; font-size: 16px; font-weight: 700; cursor: pointer; width: 100%; transition: all 0.2s; font-family: var(--font); margin-top: 4px; }
 .form-submit-btn:hover { background: var(--primary-dark); transform: translateY(-1px); box-shadow: 0 8px 24px rgba(0,191,165,0.35); }
