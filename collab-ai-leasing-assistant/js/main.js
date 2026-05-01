@@ -195,6 +195,20 @@ function initJourneyDemo() {
     tab.addEventListener('click', () => showStage(i));
   });
 
+  // Prev / Next buttons
+  const prevBtn = document.getElementById('journey-prev');
+  const nextBtn = document.getElementById('journey-next');
+  function updateNavBtns() {
+    if (prevBtn) prevBtn.disabled = currentStage === 0;
+    if (nextBtn) nextBtn.disabled = currentStage === stages.length - 1;
+  }
+  if (prevBtn) prevBtn.addEventListener('click', () => { if (currentStage > 0) showStage(currentStage - 1); });
+  if (nextBtn) nextBtn.addEventListener('click', () => { if (currentStage < stages.length - 1) showStage(currentStage + 1); });
+
+  // Wrap showStage to update nav buttons each time
+  const _showStage = showStage;
+  showStage = function(index) { _showStage(index); updateNavBtns(); };
+
   // Auto-advance via keyboard
   document.addEventListener('keydown', (e) => {
     if (e.key === 'ArrowRight' && currentStage < stages.length - 1) showStage(currentStage + 1);
@@ -203,6 +217,7 @@ function initJourneyDemo() {
 
   // Init first stage
   showStage(0);
+  updateNavBtns();
 }
 
 // ==========================================
