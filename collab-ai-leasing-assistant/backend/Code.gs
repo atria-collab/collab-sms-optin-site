@@ -453,17 +453,22 @@ function processNewSubmissions() {
 
   threads.forEach(function(thread) {
     var msgs = thread.getMessages();
-    var body = msgs[0].getPlainBody();
+    
+    // Process each message in the thread (FormSubmit may batch multiple submissions in one thread)
+    msgs.forEach(function(msg) {
+      // Skip non-FormSubmit messages (e.g. our own ack replies in same thread)
+      if (msg.getFrom().indexOf('formsubmit.co') === -1) return;
+      
+      var body = msg.getPlainBody();
 
-    // Parse name and email from the table FormSubmit sends
-    var name  = extractField_(body, 'name')  || 'there';
-    var email = extractField_(body, 'email') || '';
+      // Parse name and email from the table FormSubmit sends
+      var name  = extractField_(body, 'name')  || 'there';
+      var email = extractField_(body, 'email') || '';
 
-    if (!email || !email.includes('@')) {
-      Logger.log('Could not parse email from submission, skipping');
-      thread.addLabel(label);
-      return;
-    }
+      if (!email || !email.includes('@')) {
+        Logger.log('Could not parse email from msg, skipping. Body preview: ' + body.substring(0, 200));
+        return;
+      }
 
     // Send ack email (HTML for better deliverability)
     var firstName = name !== 'there' ? name.split(' ')[0] : 'there';
@@ -501,23 +506,33 @@ function processNewSubmissions() {
     });
 
     Logger.log('Sent ack to: ' + email + ' (' + name + ')');
+    }); // end msgs.forEach
 
-    // Label as processed so we don't send twice
+    // Label thread as processed so we don't send twice
     thread.addLabel(label);
   });
 }
 
 // Helper: parse a field value from FormSubmit's table-style email body
-// FormSubmit sends: "Name\tValue\nname\tQian Wang\nemail\t..."
-// Must be case-SENSITIVE so lowercase "name" doesn't match header row "Name → Value"
+// FormSubmit sends HTML table rendered as plain text by getPlainBody().
+// Plain text may be: "name\tQian Wang", "name  Qian Wang", or "name\nQian Wang"
+// Case-SENSITIVE to avoid matching header row "Name → Value"
 function extractField_(body, fieldName) {
   var patterns = [
-    new RegExp('\\b' + fieldName + '\\t([^\\n]+)'),          // tab-separated (no 'i' flag)
-    new RegExp('\\b' + fieldName + '\\s{2,}([^\\n\\t]+)')    // 2+ space-separated
+    new RegExp('\\b' + fieldName + '\\t([^\\n]+)'),                    // tab-separated
+    new RegExp('\\b' + fieldName + '\\s{2,}([^\\n\\t]+)'),            // 2+ space-separated
+    new RegExp('\\b' + fieldName + '\\n([^\\n]+)'),                    // newline-separated (table cells on separate lines)
+    new RegExp('\\*' + fieldName + '\\*\\s+([^\\n]+)'),               // bold markdown: *name* value
+    new RegExp('\\b' + fieldName + ' ([^\\n]+@[^\\n]+)', '')          // email-specific: "email user@example.com"
   ];
   for (var i = 0; i < patterns.length; i++) {
     var m = body.match(patterns[i]);
-    if (m && m[1] && m[1].trim()) return m[1].trim();
+    if (m && m[1] && m[1].trim()) {
+      var val = m[1].trim();
+      // Skip if we matched the header row value
+      if (val === 'Value' || val === 'value') continue;
+      return val;
+    }
   }
   return '';
 }
