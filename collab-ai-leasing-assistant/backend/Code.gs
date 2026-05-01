@@ -506,6 +506,35 @@ function processNewSubmissions() {
     });
 
     Logger.log('Sent ack to: ' + email + ' (' + name + ')');
+
+    // ── Write to Google Sheet ──────────────────────────────────────────
+    var phone   = extractField_(body, 'phone')   || '';
+    var city    = extractField_(body, 'city')    || '';
+    var housing = extractField_(body, 'housing') || '';
+    try {
+      var sheet = getOrCreateSheet();
+      // Avoid duplicate rows for the same email
+      var existingRow = findRowByEmail(sheet, email);
+      if (!existingRow) {
+        sheet.appendRow([
+          new Date(),   // Timestamp
+          name,         // Name
+          email,        // Email
+          phone,        // Phone
+          city,         // City
+          housing,      // Housing Status
+          '',           // Verification Token (N/A for FormSubmit flow)
+          'confirmed'   // Status
+        ]);
+        Logger.log('Sheet row added for: ' + email);
+      } else {
+        Logger.log('Sheet row already exists for: ' + email + ', skipping duplicate');
+      }
+    } catch(sheetErr) {
+      Logger.log('Sheet write error for ' + email + ': ' + sheetErr.toString());
+    }
+    // ──────────────────────────────────────────────────────────────────
+
     }); // end msgs.forEach
 
     // Label thread as processed so we don't send twice
