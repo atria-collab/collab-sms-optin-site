@@ -45,12 +45,6 @@ var COLS = {
 // HANDLE POST (Form submission)
 // ============================================================
 function doPost(e) {
-  // TEMP: when called from editor with no args, run cleanup + process
-  if (!e || !e.postData) {
-    cleanTestData();
-    processNewSubmissions();
-    return;
-  }
   try {
     var data = JSON.parse(e.postData.contents);
     var sheet = getOrCreateSheet();
