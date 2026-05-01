@@ -15,12 +15,12 @@
  * Option C (Dev testing): Leave empty string to show success state immediately.
  */
 
-// FormSubmit.co endpoint — sends submissions to leasing@collabhome.io instantly
+// FormSubmit.co endpoint — sends submissions to atria.collab@collabhome.io instantly
 // No registration required. First submission triggers an activation email to leasing@.
 // Replace with your GAS URL once Workspace admin enables public web app deployment.
 // FormSubmit.co — using standard POST (not AJAX) so _autoresponse fires reliably
 // The form submits natively and _next redirects back to the site with ?submitted=1
-window.FORM_ENDPOINT = 'https://formsubmit.co/752e5b6d930839b5bd9378a19bcf5a22';
+window.FORM_ENDPOINT = 'https://formsubmit.co/atria.collab@collabhome.io';
 
 // ==========================================
 // NAV SCROLL EFFECT

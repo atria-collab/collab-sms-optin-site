@@ -15,7 +15,7 @@
 var CONFIG = {
   SPREADSHEET_NAME: 'Collab AI Leasing — Lead Database',
   SHEET_NAME: 'Submissions',
-  REPORT_EMAIL: 'leasing@collabhome.io',
+  REPORT_EMAIL: 'atria.collab@collabhome.io',
   FROM_EMAIL: 'atria.collab@collabhome.io',
   FROM_NAME: 'Collab AI Leasing Assistant',
   SITE_URL: 'https://atria-collab.github.io/collab-sms-optin-site/collab-ai-leasing-assistant/',
