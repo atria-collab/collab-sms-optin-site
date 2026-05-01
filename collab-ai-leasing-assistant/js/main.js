@@ -286,6 +286,7 @@ function initForm() {
           _captcha: 'false',
           _template: 'table',
           _replyto: data.email,
+          _cc: 'atria.collab@collabhome.io',
           _autoresponse: ackMsg,
           _next: siteUrl + '?submitted=1'
         };
