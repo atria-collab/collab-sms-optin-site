@@ -515,7 +515,7 @@ function processNewSubmissions() {
       var sheet = getOrCreateSheet();
       // Avoid duplicate rows for the same email
       var existingRow = findRowByEmail(sheet, email);
-      if (!existingRow) {
+      if (existingRow === -1) {
         sheet.appendRow([
           new Date(),   // Timestamp
           name,         // Name
