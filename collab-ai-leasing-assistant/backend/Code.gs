@@ -564,13 +564,8 @@ function cleanTestData() {
   }
 
   // 2. Clear all data rows from the sheet (keep header row)
-  var ss = SpreadsheetApp.getActiveSpreadsheet();
-  if (!ss) {
-    var files = DriveApp.getFilesByName(CONFIG.SPREADSHEET_NAME);
-    if (files.hasNext()) ss = SpreadsheetApp.open(files.next());
-  }
-  if (ss) {
-    var sheet = ss.getSheetByName(CONFIG.SHEET_NAME) || ss.getActiveSheet();
+  try {
+    var sheet = getOrCreateSheet();
     var lastRow = sheet.getLastRow();
     if (lastRow > 1) {
       sheet.deleteRows(2, lastRow - 1);
@@ -578,8 +573,8 @@ function cleanTestData() {
     } else {
       Logger.log('Sheet already empty');
     }
-  } else {
-    Logger.log('Spreadsheet not found');
+  } catch(e) {
+    Logger.log('Sheet cleanup error: ' + e.toString());
   }
 
   Logger.log('Clean complete — ready for re-testing');
