@@ -447,7 +447,7 @@ function testWeeklyReport() {
 function processNewSubmissions() {
   var label = getOrCreateLabel_('FormSubmit/Processed');
   var threads = GmailApp.search(
-    'from:submissions@formsubmit.co subject:"You\'re entered" -label:FormSubmit/Processed',
+    'from:submissions@formsubmit.co subject:"New Sweepstakes Entry" -label:FormSubmit/Processed',
     0, 20
   );
 
