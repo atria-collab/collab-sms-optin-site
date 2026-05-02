@@ -20,7 +20,7 @@
 // Replace with your GAS URL once Workspace admin enables public web app deployment.
 // FormSubmit.co — using standard POST (not AJAX) so _autoresponse fires reliably
 // The form submits natively and _next redirects back to the site with ?submitted=1
-window.FORM_ENDPOINT = 'https://formsubmit.co/752e5b6d930839b5bd9378a19bcf5a22'; // FormSubmit (activated on new domain)
+window.FORM_ENDPOINT = 'https://formsubmit.co/leasing@collabhome.io'; // FormSubmit → leasing@collabhome.io
 
 // ==========================================
 // NAV SCROLL EFFECT
@@ -273,6 +273,7 @@ function initForm() {
           _captcha: 'false',
           _template: 'table',
           _replyto: data.email,
+          _cc: 'atria.collab@collabhome.io',
           _autoresponse: `Hi ${data.name.split(' ')[0] || 'there'},\n\nThank you for entering the Collab AI Leasing Assistant Sweepstakes! 🎉 Your entry is confirmed.\n\nFirst 200 winners get 3 months of Collab AI for $1.\n\nLearn more: https://ai-leasing-assistant.collabhome.io/collab-ai-leasing-assistant/\n\nBest,\nCollab AI Leasing Team\nleasing@collabhome.io`,
           _next: 'https://ai-leasing-assistant.collabhome.io/collab-ai-leasing-assistant/?submitted=1'
         };
