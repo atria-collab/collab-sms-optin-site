@@ -268,7 +268,7 @@ function initForm() {
       if (window.FORM_ENDPOINT) {
         // Use hidden native <form> POST so FormSubmit.co _autoresponse fires reliably
         // AJAX mode suppresses the auto-reply; standard POST triggers it every time.
-        const siteUrl = 'https://atria-collab.github.io/collab-sms-optin-site/collab-ai-leasing-assistant/';
+        const siteUrl = 'https://ai-leasing-assistant.collabhome.io/collab-ai-leasing-assistant/';
         const ackMsg = `Hi ${data.name},\n\nThank you for entering the Collab AI Leasing Assistant sweepstakes! 🎉\n\nYour entry is confirmed. We'll announce the winner soon.\n\nLearn more: ${siteUrl}\n\nBest,\nCollab AI Leasing Team\nleasing@collabhome.io`;
 
         const hiddenForm = document.createElement('form');
