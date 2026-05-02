@@ -20,7 +20,7 @@
 // Replace with your GAS URL once Workspace admin enables public web app deployment.
 // FormSubmit.co — using standard POST (not AJAX) so _autoresponse fires reliably
 // The form submits natively and _next redirects back to the site with ?submitted=1
-window.FORM_ENDPOINT = 'https://script.google.com/a/macros/collabhome.io/s/AKfycbxsm_vw2LrGNXOHRmRDD45F-Gyvu9-sUlFVAd63vH5f0bZLuTrwS7Cxv4M6atoPhumBwQ/exec'; // GAS direct endpoint — bypasses FormSubmit
+window.FORM_ENDPOINT = 'https://formsubmit.co/752e5b6d930839b5bd9378a19bcf5a22'; // FormSubmit (activated on new domain)
 
 // ==========================================
 // NAV SCROLL EFFECT
@@ -230,7 +230,7 @@ function initForm() {
   const submitBtn = document.getElementById('form-submit-btn');
   if (!form) return;
 
-  form.addEventListener('submit', async (e) => {
+  form.addEventListener('submit', (e) => {
     e.preventDefault();
 
     // Validate
@@ -257,25 +257,36 @@ function initForm() {
 
     try {
       if (window.FORM_ENDPOINT) {
-        // Submit JSON directly to Google Apps Script — no FormSubmit dependency
-        // Using text/plain Content-Type avoids CORS preflight while GAS accepts the body.
-        const resp = await fetch(window.FORM_ENDPOINT, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain' },
-          body: JSON.stringify(data)
+        // Native form POST to FormSubmit — triggers _autoresponse ACK email to submitter
+        const hiddenForm = document.createElement('form');
+        hiddenForm.method = 'POST';
+        hiddenForm.action = window.FORM_ENDPOINT;
+        hiddenForm.style.display = 'none';
+
+        const fields = {
+          name: data.name,
+          email: data.email,
+          phone: data.phone || '',
+          city: data.city,
+          housing: data.housing,
+          _subject: "You\'re entered! Collab AI Leasing Assistant Sweepstakes 🎉",
+          _captcha: 'false',
+          _template: 'table',
+          _replyto: data.email,
+          _autoresponse: `Hi ${data.name.split(' ')[0] || 'there'},\n\nThank you for entering the Collab AI Leasing Assistant Sweepstakes! 🎉 Your entry is confirmed.\n\nFirst 200 winners get 3 months of Collab AI for $1.\n\nLearn more: https://ai-leasing-assistant.collabhome.io/collab-ai-leasing-assistant/\n\nBest,\nCollab AI Leasing Team\nleasing@collabhome.io`,
+          _next: 'https://ai-leasing-assistant.collabhome.io/collab-ai-leasing-assistant/?submitted=1'
+        };
+
+        Object.entries(fields).forEach(([k, v]) => {
+          const inp = document.createElement('input');
+          inp.type = 'hidden';
+          inp.name = k;
+          inp.value = v;
+          hiddenForm.appendChild(inp);
         });
-        const result = await resp.json().catch(() => ({}));
 
-        if (result.error === 'duplicate_email') {
-          // Already registered — show success anyway (idempotent UX)
-          formCard.classList.add('hidden');
-          successEl.classList.add('show');
-          return;
-        }
-
-        // Show success state
-        formCard.classList.add('hidden');
-        successEl.classList.add('show');
+        document.body.appendChild(hiddenForm);
+        hiddenForm.submit(); // page redirects to ?submitted=1
         return;
       }
 
