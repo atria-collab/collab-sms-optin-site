@@ -18,7 +18,7 @@ var CONFIG = {
   REPORT_EMAIL: 'atria.collab@collabhome.io',
   FROM_EMAIL: 'atria.collab@collabhome.io',
   FROM_NAME: 'Collab AI Leasing Assistant',
-  SITE_URL: 'https://atria-collab.github.io/collab-sms-optin-site/collab-ai-leasing-assistant/',
+  SITE_URL: 'https://ai-leasing-assistant.collabhome.io/collab-ai-leasing-assistant/',
   PRODUCT_NAME: 'Collab AI Leasing Assistant'
 };
 
