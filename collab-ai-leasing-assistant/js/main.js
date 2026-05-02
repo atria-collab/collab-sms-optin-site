@@ -20,7 +20,7 @@
 // Replace with your GAS URL once Workspace admin enables public web app deployment.
 // FormSubmit.co — using standard POST (not AJAX) so _autoresponse fires reliably
 // The form submits natively and _next redirects back to the site with ?submitted=1
-window.FORM_ENDPOINT = 'https://formsubmit.co/752e5b6d930839b5bd9378a19bcf5a22';
+window.FORM_ENDPOINT = 'https://script.google.com/a/macros/collabhome.io/s/AKfycbxsm_vw2LrGNXOHRmRDD45F-Gyvu9-sUlFVAd63vH5f0bZLuTrwS7Cxv4M6atoPhumBwQ/exec'; // GAS direct endpoint — bypasses FormSubmit
 
 // ==========================================
 // NAV SCROLL EFFECT
@@ -236,13 +236,8 @@ function initForm() {
     // Validate
     if (!validateForm()) return;
 
-    // Check duplicate email
+    // Duplicate check is handled server-side by GAS — no localStorage block needed
     const email = form.querySelector('[name="email"]').value.toLowerCase();
-    const submitted = JSON.parse(localStorage.getItem('collab_submitted_emails') || '[]');
-    if (submitted.includes(email)) {
-      alert('This email has already been submitted. Each email can only enter once.');
-      return;
-    }
 
     // Disable button
     submitBtn.disabled = true;
@@ -261,46 +256,27 @@ function initForm() {
     };
 
     try {
-      // Save to localStorage first (before redirect)
-      submitted.push(email);
-      localStorage.setItem('collab_submitted_emails', JSON.stringify(submitted));
-
       if (window.FORM_ENDPOINT) {
-        // Use hidden native <form> POST so FormSubmit.co _autoresponse fires reliably
-        // AJAX mode suppresses the auto-reply; standard POST triggers it every time.
-        const siteUrl = 'https://ai-leasing-assistant.collabhome.io/collab-ai-leasing-assistant/';
-        const ackMsg = `Hi ${data.name},\n\nThank you for entering the Collab AI Leasing Assistant sweepstakes! 🎉\n\nYour entry is confirmed. We'll announce the winner soon.\n\nLearn more: ${siteUrl}\n\nBest,\nCollab AI Leasing Team\nleasing@collabhome.io`;
-
-        const hiddenForm = document.createElement('form');
-        hiddenForm.method = 'POST';
-        hiddenForm.action = window.FORM_ENDPOINT;
-        hiddenForm.style.display = 'none';
-
-        const fields = {
-          name: data.name,
-          email: data.email,
-          phone: data.phone || '',
-          city: data.city,
-          housing: data.housing,
-          _subject: 'You\'re entered! Collab AI Leasing Assistant Sweepstakes 🎉',
-          _captcha: 'false',
-          _template: 'table',
-          _replyto: data.email,
-          _cc: 'atria.collab@collabhome.io',
-          _next: siteUrl + '?submitted=1'
-        };
-
-        Object.entries(fields).forEach(([k, v]) => {
-          const inp = document.createElement('input');
-          inp.type = 'hidden';
-          inp.name = k;
-          inp.value = v;
-          hiddenForm.appendChild(inp);
+        // Submit JSON directly to Google Apps Script — no FormSubmit dependency
+        // Using text/plain Content-Type avoids CORS preflight while GAS accepts the body.
+        const resp = await fetch(window.FORM_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain' },
+          body: JSON.stringify(data)
         });
+        const result = await resp.json().catch(() => ({}));
 
-        document.body.appendChild(hiddenForm);
-        hiddenForm.submit(); // page will redirect → ?submitted=1
-        return; // don't show inline success (redirect handles it)
+        if (result.error === 'duplicate_email') {
+          // Already registered — show success anyway (idempotent UX)
+          formCard.classList.add('hidden');
+          successEl.classList.add('show');
+          return;
+        }
+
+        // Show success state
+        formCard.classList.add('hidden');
+        successEl.classList.add('show');
+        return;
       }
 
       // Fallback (no endpoint set): show inline success
