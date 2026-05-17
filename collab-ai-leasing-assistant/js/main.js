@@ -264,6 +264,8 @@ function initForm() {
       const payload = {
         access_key: key,
         subject: "New Sweepstakes Entry — Collab AI Leasing Assistant 🎉",
+        from_name: "Collab AI Sweepstakes",
+        replyto: email,
         name: form.querySelector('[name="name"]').value.trim(),
         email,
         phone: (form.querySelector('[name="phone"]').value || '').trim(),
