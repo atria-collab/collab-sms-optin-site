@@ -246,48 +246,62 @@ function initForm() {
     submitBtn.textContent = 'Submitting...';
 
     const key = window.WEB3FORMS_KEY || '';
-    const siteUrl = 'https://ai-leasing-assistant.collabhome.io/collab-ai-leasing-assistant/';
-
-    // Save to localStorage before redirect (so duplicate check works on return)
-    submitted.push(email);
-    localStorage.setItem('collab_submitted_emails', JSON.stringify(submitted));
-    trackEvent('sweepstakes_submit', {});
 
     if (!key || key === 'REPLACE_WITH_WEB3FORMS_ACCESS_KEY') {
       // Dev/no-key mode: show inline success without API
+      submitted.push(email);
+      localStorage.setItem('collab_submitted_emails', JSON.stringify(submitted));
       formCard.classList.add('hidden');
       successEl.classList.add('show');
       return;
     }
 
-    // Native form POST to Web3Forms (no AJAX — avoids CORS/browser security issues;
-    // Turnstile token is included automatically since it lives in the same form).
-    const w3Fields = {
-      access_key: key,
-      _subject: "New Sweepstakes Entry — Collab AI Leasing Assistant 🎉",
-      _next: siteUrl + '?submitted=1',
-      _captcha: 'false'
-    };
+    try {
+      // Rename Turnstile field so Web3Forms (free plan) doesn't treat it as a Pro feature
+      const tsField = form.querySelector('[name="cf-turnstile-response"]');
+      if (tsField) tsField.name = '_cf_turnstile';
 
-    Object.entries(w3Fields).forEach(([k, v]) => {
-      let inp = form.querySelector(`[name="${k}"]`);
-      if (!inp) {
-        inp = document.createElement('input');
-        inp.type = 'hidden';
-        inp.name = k;
-        form.appendChild(inp);
+      const payload = {
+        access_key: key,
+        subject: "New Sweepstakes Entry — Collab AI Leasing Assistant 🎉",
+        name: form.querySelector('[name="name"]').value.trim(),
+        email,
+        phone: (form.querySelector('[name="phone"]').value || '').trim(),
+        city: form.querySelector('[name="city"]').value.trim(),
+        housing: form.querySelector('[name="housing"]').value,
+        timestamp: new Date().toISOString()
+      };
+
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const json = await res.json();
+
+      if (res.ok && json.success) {
+        submitted.push(email);
+        localStorage.setItem('collab_submitted_emails', JSON.stringify(submitted));
+        trackEvent('sweepstakes_submit', {});
+        formCard.classList.add('hidden');
+        successEl.classList.add('show');
+        document.getElementById('sweepstakes')?.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        throw new Error(json.message || 'Submission failed');
       }
-      inp.value = v;
-    });
-
-    // Remove Turnstile field — Web3Forms treats cf-turnstile-response as a Pro feature
-    // and rejects the submission if it's present on a free plan.
-    const tsField = form.querySelector('[name="cf-turnstile-response"]');
-    if (tsField) tsField.name = '_turnstile_verified'; // rename so it's ignored by Web3Forms
-
-    form.action = 'https://api.web3forms.com/submit';
-    form.method = 'POST';
-    form.submit(); // redirects to ?submitted=1 on success
+    } catch (err) {
+      console.error('Form submission error:', err);
+      submitBtn.disabled = false;
+      submitBtn.textContent = '🎉 Enter Sweepstakes';
+      let errEl = form.querySelector('.form-submit-error');
+      if (!errEl) {
+        errEl = document.createElement('p');
+        errEl.className = 'form-submit-error';
+        errEl.style.cssText = 'color:#e74c3c;font-size:13px;margin-top:12px;text-align:center';
+        submitBtn.parentNode.insertBefore(errEl, submitBtn.nextSibling);
+      }
+      errEl.textContent = 'Something went wrong. Please try again or email us at atria.collab@collabhome.io';
+    }
   });
 }
 
