@@ -280,6 +280,11 @@ function initForm() {
       inp.value = v;
     });
 
+    // Remove Turnstile field — Web3Forms treats cf-turnstile-response as a Pro feature
+    // and rejects the submission if it's present on a free plan.
+    const tsField = form.querySelector('[name="cf-turnstile-response"]');
+    if (tsField) tsField.name = '_turnstile_verified'; // rename so it's ignored by Web3Forms
+
     form.action = 'https://api.web3forms.com/submit';
     form.method = 'POST';
     form.submit(); // redirects to ?submitted=1 on success
