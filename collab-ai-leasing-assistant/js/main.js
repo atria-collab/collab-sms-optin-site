@@ -249,8 +249,6 @@ function initForm() {
     const phone = form.querySelector('[name="phone"]').value.trim() || '';
     const city = form.querySelector('[name="city"]').value.trim();
     const housing = form.querySelector('[name="housing"]').value;
-    const turnstileToken = (form.querySelector('[name="cf-turnstile-response"]') || {}).value || '';
-
     // Dev / no-key mode: skip API and show success inline
     const key = window.WEB3FORMS_KEY || '';
     if (!key || key === 'REPLACE_WITH_WEB3FORMS_ACCESS_KEY') {
@@ -272,7 +270,6 @@ function initForm() {
         phone,
         city,
         housing,
-        "cf-turnstile-response": turnstileToken,
         timestamp: new Date().toISOString()
       };
 
