@@ -3,24 +3,21 @@
  *
  * FORM BACKEND SETUP:
  * ==================
- * Option A (Recommended - permanent): Deploy a Google Apps Script web app that:
- *   1. Accepts POST with {name, email, phone, city, housing, timestamp}
- *   2. Appends to a Google Sheet
- *   3. Sends confirmation email to visitor
- *   4. Weekly trigger sends report to leasing@collabhome.io
- *   Set window.FORM_ENDPOINT to your Google Apps Script URL.
+ * Currently using Web3Forms (https://web3forms.com) — free, no account required.
  *
- * Option B (Quick): Formspree - sign up at formspree.io, create a form, set the URL.
+ * To get/replace the access key:
+ *   1. Go to https://web3forms.com
+ *   2. Enter leasing@collabhome.io (or atria.collab@collabhome.io)
+ *   3. Copy the access key from the email they send
+ *   4. Replace the value of window.WEB3FORMS_KEY below
  *
- * Option C (Dev testing): Leave empty string to show success state immediately.
+ * Option B (Permanent): Google Apps Script web app — see README for setup guide.
+ * Option C (Dev testing): Set window.WEB3FORMS_KEY = '' to skip API and show success inline.
  */
 
-// FormSubmit.co endpoint — sends to leasing@collabhome.io (which delivers to atria.collab inbox)
-// No registration required. First submission triggers an activation email to leasing@.
-// Replace with your GAS URL once Workspace admin enables public web app deployment.
-// FormSubmit.co — using standard POST (not AJAX) so _autoresponse fires reliably
-// The form submits natively and _next redirects back to the site with ?submitted=1
-window.FORM_ENDPOINT = 'https://formsubmit.co/leasing@collabhome.io'; // FormSubmit → leasing@collabhome.io
+// Web3Forms access key — replace with key received from https://web3forms.com
+// (enter leasing@collabhome.io there to get a key emailed instantly)
+window.WEB3FORMS_KEY = 'c4ca479d-2263-4a7f-b123-78628ff9f2f4';
 
 // ==========================================
 // NAV SCROLL EFFECT
@@ -230,75 +227,88 @@ function initForm() {
   const submitBtn = document.getElementById('form-submit-btn');
   if (!form) return;
 
-  form.addEventListener('submit', (e) => {
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     // Validate
     if (!validateForm()) return;
 
-    // Duplicate check is handled server-side by GAS — no localStorage block needed
-    const email = form.querySelector('[name="email"]').value.toLowerCase();
+    // Check duplicate email
+    const email = form.querySelector('[name="email"]').value.toLowerCase().trim();
+    const submitted = JSON.parse(localStorage.getItem('collab_submitted_emails') || '[]');
+    if (submitted.includes(email)) {
+      alert('This email has already been submitted. Each email can only enter once.');
+      return;
+    }
 
     // Disable button
     submitBtn.disabled = true;
     submitBtn.textContent = 'Submitting...';
 
-    const data = {
-      name: form.querySelector('[name="name"]').value,
-      email: email,
-      phone: form.querySelector('[name="phone"]').value || '',
-      city: form.querySelector('[name="city"]').value,
-      housing: form.querySelector('[name="housing"]').value,
-      tc_accepted: true,
-      privacy_accepted: true,
-      email_consent: true,
-      timestamp: new Date().toISOString()
-    };
+    const name = form.querySelector('[name="name"]').value.trim();
+    const phone = form.querySelector('[name="phone"]').value.trim() || '';
+    const city = form.querySelector('[name="city"]').value.trim();
+    const housing = form.querySelector('[name="housing"]').value;
+    const turnstileToken = (form.querySelector('[name="cf-turnstile-response"]') || {}).value || '';
 
-    try {
-      if (window.FORM_ENDPOINT) {
-        // Native form POST to FormSubmit — triggers _autoresponse ACK email to submitter
-        const hiddenForm = document.createElement('form');
-        hiddenForm.method = 'POST';
-        hiddenForm.action = window.FORM_ENDPOINT;
-        hiddenForm.style.display = 'none';
-
-        const fields = {
-          name: data.name,
-          email: data.email,
-          phone: data.phone || '',
-          city: data.city,
-          housing: data.housing,
-          _subject: "You\'re entered! Collab AI Leasing Assistant Sweepstakes 🎉",
-          _captcha: 'false',
-          _template: 'table',
-          _replyto: data.email,
-          _cc: 'atria.collab@collabhome.io',
-          _autoresponse: `Hi ${data.name.split(' ')[0] || 'there'},\n\nThank you for entering the Collab AI Leasing Assistant Sweepstakes! 🎉 Your entry is confirmed.\n\nFirst 200 winners get 3 months of Collab AI for $1.\n\nLearn more: https://ai-leasing-assistant.collabhome.io/collab-ai-leasing-assistant/\n\nBest,\nCollab AI Leasing Team\nleasing@collabhome.io`,
-          _next: 'https://ai-leasing-assistant.collabhome.io/collab-ai-leasing-assistant/?submitted=1'
-        };
-
-        Object.entries(fields).forEach(([k, v]) => {
-          const inp = document.createElement('input');
-          inp.type = 'hidden';
-          inp.name = k;
-          inp.value = v;
-          hiddenForm.appendChild(inp);
-        });
-
-        document.body.appendChild(hiddenForm);
-        hiddenForm.submit(); // page redirects to ?submitted=1
-        return;
-      }
-
-      // Fallback (no endpoint set): show inline success
+    // Dev / no-key mode: skip API and show success inline
+    const key = window.WEB3FORMS_KEY || '';
+    if (!key || key === 'REPLACE_WITH_WEB3FORMS_ACCESS_KEY') {
+      submitted.push(email);
+      localStorage.setItem('collab_submitted_emails', JSON.stringify(submitted));
       formCard.classList.add('hidden');
       successEl.classList.add('show');
+      return;
+    }
+
+    try {
+      const payload = {
+        access_key: key,
+        subject: "New Sweepstakes Entry — Collab AI Leasing Assistant 🎉",
+        from_name: "Collab AI Sweepstakes Form",
+        replyto: email,
+        name,
+        email,
+        phone,
+        city,
+        housing,
+        "cf-turnstile-response": turnstileToken,
+        timestamp: new Date().toISOString()
+      };
+
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      const json = await res.json();
+
+      if (res.ok && json.success) {
+        // Save email to prevent duplicates
+        submitted.push(email);
+        localStorage.setItem('collab_submitted_emails', JSON.stringify(submitted));
+        trackEvent('sweepstakes_submit', { city, housing });
+        formCard.classList.add('hidden');
+        successEl.classList.add('show');
+        document.getElementById('sweepstakes')?.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        throw new Error(json.message || 'Submission failed');
+      }
 
     } catch (err) {
       console.error('Form submission error:', err);
-      formCard.classList.add('hidden');
-      successEl.classList.add('show');
+      submitBtn.disabled = false;
+      submitBtn.textContent = '🎉 Enter Sweepstakes';
+      // Show a friendly inline error
+      let errEl = form.querySelector('.form-submit-error');
+      if (!errEl) {
+        errEl = document.createElement('p');
+        errEl.className = 'form-submit-error';
+        errEl.style.cssText = 'color:#e74c3c;font-size:13px;margin-top:12px;text-align:center';
+        submitBtn.parentNode.insertBefore(errEl, submitBtn.nextSibling);
+      }
+      errEl.textContent = 'Something went wrong. Please try again or email us at atria.collab@collabhome.io';
     }
   });
 }
