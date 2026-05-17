@@ -245,68 +245,44 @@ function initForm() {
     submitBtn.disabled = true;
     submitBtn.textContent = 'Submitting...';
 
-    const name = form.querySelector('[name="name"]').value.trim();
-    const phone = form.querySelector('[name="phone"]').value.trim() || '';
-    const city = form.querySelector('[name="city"]').value.trim();
-    const housing = form.querySelector('[name="housing"]').value;
-    // Dev / no-key mode: skip API and show success inline
     const key = window.WEB3FORMS_KEY || '';
+    const siteUrl = 'https://ai-leasing-assistant.collabhome.io/collab-ai-leasing-assistant/';
+
+    // Save to localStorage before redirect (so duplicate check works on return)
+    submitted.push(email);
+    localStorage.setItem('collab_submitted_emails', JSON.stringify(submitted));
+    trackEvent('sweepstakes_submit', {});
+
     if (!key || key === 'REPLACE_WITH_WEB3FORMS_ACCESS_KEY') {
-      submitted.push(email);
-      localStorage.setItem('collab_submitted_emails', JSON.stringify(submitted));
+      // Dev/no-key mode: show inline success without API
       formCard.classList.add('hidden');
       successEl.classList.add('show');
       return;
     }
 
-    try {
-      const payload = {
-        access_key: key,
-        subject: "New Sweepstakes Entry — Collab AI Leasing Assistant 🎉",
-        from_name: "Collab AI Sweepstakes Form",
-        replyto: email,
-        name,
-        email,
-        phone,
-        city,
-        housing,
-        timestamp: new Date().toISOString()
-      };
+    // Native form POST to Web3Forms (no AJAX — avoids CORS/browser security issues;
+    // Turnstile token is included automatically since it lives in the same form).
+    const w3Fields = {
+      access_key: key,
+      _subject: "New Sweepstakes Entry — Collab AI Leasing Assistant 🎉",
+      _next: siteUrl + '?submitted=1',
+      _captcha: 'false'
+    };
 
-      const res = await fetch('https://api.web3forms.com/submit', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify(payload)
-      });
-
-      const json = await res.json();
-
-      if (res.ok && json.success) {
-        // Save email to prevent duplicates
-        submitted.push(email);
-        localStorage.setItem('collab_submitted_emails', JSON.stringify(submitted));
-        trackEvent('sweepstakes_submit', { city, housing });
-        formCard.classList.add('hidden');
-        successEl.classList.add('show');
-        document.getElementById('sweepstakes')?.scrollIntoView({ behavior: 'smooth' });
-      } else {
-        throw new Error(json.message || 'Submission failed');
+    Object.entries(w3Fields).forEach(([k, v]) => {
+      let inp = form.querySelector(`[name="${k}"]`);
+      if (!inp) {
+        inp = document.createElement('input');
+        inp.type = 'hidden';
+        inp.name = k;
+        form.appendChild(inp);
       }
+      inp.value = v;
+    });
 
-    } catch (err) {
-      console.error('Form submission error:', err);
-      submitBtn.disabled = false;
-      submitBtn.textContent = '🎉 Enter Sweepstakes';
-      // Show a friendly inline error
-      let errEl = form.querySelector('.form-submit-error');
-      if (!errEl) {
-        errEl = document.createElement('p');
-        errEl.className = 'form-submit-error';
-        errEl.style.cssText = 'color:#e74c3c;font-size:13px;margin-top:12px;text-align:center';
-        submitBtn.parentNode.insertBefore(errEl, submitBtn.nextSibling);
-      }
-      errEl.textContent = 'Something went wrong. Please try again or email us at atria.collab@collabhome.io';
-    }
+    form.action = 'https://api.web3forms.com/submit';
+    form.method = 'POST';
+    form.submit(); // redirects to ?submitted=1 on success
   });
 }
 
