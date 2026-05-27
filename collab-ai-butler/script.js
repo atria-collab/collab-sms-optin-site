@@ -203,22 +203,71 @@ const demoScenarios = {
   ]
 };
 
+// Sequential animated chat — messages appear one at a time
+// Tenant msgs: 600ms delay, AI msgs: show typing bubble for 900ms first
+let demoAnimTimer = null;
+
+function clearDemoTimers() {
+  if (demoAnimTimer) { clearTimeout(demoAnimTimer); demoAnimTimer = null; }
+}
+
+function appendMsg(chatEl, msg) {
+  const div = document.createElement('div');
+  div.className = `demo-msg ${msg.role} demo-msg-enter`;
+  div.innerHTML = `
+    <div class="demo-avatar">${msg.avatar}</div>
+    <div class="demo-bubble">${msg.text}</div>
+  `;
+  chatEl.appendChild(div);
+  // Trigger enter animation on next frame
+  requestAnimationFrame(() => requestAnimationFrame(() => div.classList.add('demo-msg-visible')));
+  chatEl.scrollTop = chatEl.scrollHeight;
+}
+
+function showTyping(chatEl) {
+  const div = document.createElement('div');
+  div.className = 'demo-msg ai demo-msg-typing demo-msg-enter';
+  div.innerHTML = `
+    <div class="demo-avatar">✦</div>
+    <div class="demo-bubble demo-typing-bubble"><span></span><span></span><span></span></div>
+  `;
+  chatEl.appendChild(div);
+  requestAnimationFrame(() => requestAnimationFrame(() => div.classList.add('demo-msg-visible')));
+  chatEl.scrollTop = chatEl.scrollHeight;
+  return div;
+}
+
 function renderDemo(scenario) {
+  clearDemoTimers();
   const chatEl = document.getElementById('demo-chat');
   if (!chatEl) return;
   chatEl.innerHTML = '';
 
   const messages = demoScenarios[scenario] || [];
-  messages.forEach((msg, i) => {
-    const div = document.createElement('div');
-    div.className = `demo-msg ${msg.role}`;
-    div.style.animationDelay = `${i * 0.25}s`;
-    div.innerHTML = `
-      <div class="demo-avatar">${msg.avatar}</div>
-      <div class="demo-bubble">${msg.text}</div>
-    `;
-    chatEl.appendChild(div);
-  });
+  let cursor = 0;
+
+  function step() {
+    if (cursor >= messages.length) return;
+    const msg = messages[cursor];
+    cursor++;
+
+    if (msg.role === 'ai') {
+      // Show typing indicator, then replace with actual message
+      const typingEl = showTyping(chatEl);
+      demoAnimTimer = setTimeout(() => {
+        typingEl.remove();
+        appendMsg(chatEl, msg);
+        demoAnimTimer = setTimeout(step, 700);
+      }, 1100);
+    } else {
+      // Tenant message appears quickly
+      appendMsg(chatEl, msg);
+      demoAnimTimer = setTimeout(step, 500);
+    }
+  }
+
+  // Kick off with a short initial pause
+  demoAnimTimer = setTimeout(step, 300);
 }
 
 // Attach tab click handlers
