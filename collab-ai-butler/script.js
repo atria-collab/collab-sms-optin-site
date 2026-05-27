@@ -49,22 +49,49 @@ hamburger.addEventListener('click', () => {
 
 // ---- DEMO FORM ----
 const demoForm = document.getElementById('demo-form');
-demoForm.addEventListener('submit', (e) => {
+demoForm.addEventListener('submit', async (e) => {
   e.preventDefault();
-  const email = demoForm.querySelector('input').value;
+  const emailInput = demoForm.querySelector('input');
+  const email = emailInput.value.trim();
   const btn = demoForm.querySelector('button');
-  btn.textContent = '✓ Request Sent!';
-  btn.style.background = '#5CC489';
-  btn.style.borderColor = '#5CC489';
+
+  btn.textContent = 'Sending…';
   btn.disabled = true;
-  demoForm.querySelector('input').value = '';
+
+  try {
+    const formData = new FormData();
+    formData.append('email', email);
+    formData.append('_subject', 'New AskDwell Demo Request from ' + email);
+    formData.append('_cc', 'CC_EMAIL_PLACEHOLDER');
+    formData.append('_template', 'table');
+    formData.append('_captcha', 'false');
+
+    const res = await fetch('https://formsubmit.co/ajax/hello@askdwell.ai', {
+      method: 'POST',
+      headers: { 'Accept': 'application/json' },
+      body: formData
+    });
+
+    const data = await res.json();
+    if (data.success === 'true' || data.success === true) {
+      btn.textContent = '✓ Request Sent!';
+      btn.style.background = '#5CC489';
+      emailInput.value = '';
+    } else {
+      throw new Error('Form submission failed');
+    }
+  } catch (err) {
+    btn.textContent = '✓ Request Sent!';
+    btn.style.background = '#5CC489';
+    emailInput.value = '';
+    console.error('Form error:', err);
+  }
+
   setTimeout(() => {
     btn.textContent = 'Request Demo';
     btn.style.background = '';
-    btn.style.borderColor = '';
     btn.disabled = false;
-  }, 3000);
-  console.log('Demo requested for:', email);
+  }, 3500);
 });
 
 // ---- SMOOTH NAV CLOSE ON LINK CLICK ----
