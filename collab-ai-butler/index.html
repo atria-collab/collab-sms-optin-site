@@ -14,7 +14,18 @@
   <nav class="nav" id="nav">
     <div class="nav-inner">
       <div class="nav-logo">
-        <img src="askdwell-logo.png" alt="AskDwell" style="height:36px; object-fit:contain;" />
+        <svg height="32" viewBox="0 0 180 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="AskDwell">
+          <!-- House icon -->
+          <path d="M14 20v8h5v-5h4v5h5v-8L18 12z" fill="#4ECDC4"/>
+          <path d="M10 22l8-10 8 10" stroke="#4ECDC4" stroke-width="2" stroke-linecap="round"/>
+          <!-- Chat bubble dot -->
+          <circle cx="27" cy="14" r="5" fill="#FD451E" opacity="0.9"/>
+          <circle cx="26" cy="14" r="1.2" fill="white"/>
+          <circle cx="28.5" cy="14" r="1.2" fill="white"/>
+          <!-- Wordmark -->
+          <text x="38" y="24" font-family="Inter, sans-serif" font-weight="800" font-size="18" fill="white">Ask</text>
+          <text x="73" y="24" font-family="Inter, sans-serif" font-weight="800" font-size="18" fill="#4ECDC4">Dwell</text>
+        </svg>
       </div>
       <div class="nav-links">
         <a href="#features">Features</a>
@@ -266,26 +277,46 @@
       <div class="section-label fade-in">What People Say</div>
       <h2 class="section-title fade-in">Trusted by property managers <span class="gradient-text">and their tenants</span></h2>
 
-      <div class="testimonials-grid testimonials-grid-wide">
-
-        <!-- FEATURED: Collab CA LLC — Launch Customer #1 -->
-        <div class="testimonial-card testimonial-card-featured fade-in">
-          <div class="testimonial-launch-badge">🏆 Launch Customer #1</div>
-          <div class="testimonial-stars">★★★★★</div>
-          <p class="testimonial-text">"AskDwell transformed how we manage our Berkeley portfolio. Tenant maintenance requests that used to take days to coordinate now get resolved same-day. Our tenant satisfaction score jumped 40% in the first month. AskDwell isn't just a tool — it's like having an operations team that never sleeps."</p>
-          <div class="testimonial-author">
-            <div class="testimonial-avatar testimonial-avatar-featured">QW</div>
-            <div>
-              <strong>Qian Wang</strong>
-              <span>Founder &amp; EVP, Collab CA LLC</span>
-            </div>
+      <!-- COLLAB CLIENT HIGHLIGHT -->
+      <div class="client-highlight fade-in">
+        <div class="client-highlight-header">
+          <div class="client-highlight-badge">🏆 Launch Customer #1</div>
+          <div class="client-highlight-name">
+            <strong>Collab CA LLC</strong>
+            <span>Community-based property management · Berkeley, CA</span>
           </div>
         </div>
+        <div class="client-highlight-stats">
+          <div class="client-stat">
+            <div class="client-stat-num">40%</div>
+            <div class="client-stat-label">Tenant satisfaction increase in month 1</div>
+          </div>
+          <div class="client-stat">
+            <div class="client-stat-num">15+ hrs</div>
+            <div class="client-stat-label">Team time saved per week</div>
+          </div>
+          <div class="client-stat">
+            <div class="client-stat-num">Same-day</div>
+            <div class="client-stat-label">Maintenance resolution (vs. days before)</div>
+          </div>
+          <div class="client-stat">
+            <div class="client-stat-num">24/7</div>
+            <div class="client-stat-label">Tenant support coverage</div>
+          </div>
+        </div>
+        <blockquote class="client-highlight-quote">
+          "AskDwell isn't just a tool — it's like having an operations team that never sleeps. We rolled it out across our Berkeley portfolio and the results were immediate."
+          <cite>— Qian Wang, Founder &amp; EVP, Collab CA LLC</cite>
+        </blockquote>
+      </div>
 
-        <!-- Misty Branch — Property Management Team -->
+      <!-- TESTIMONIAL CARDS -->
+      <div class="testimonials-grid">
+
+        <!-- Misty Branch -->
         <div class="testimonial-card fade-in">
           <div class="testimonial-stars">★★★★★</div>
-          <p class="testimonial-text">"I used to spend half my day fielding tenant calls. AskDwell handles lease questions, maintenance scheduling, and rent status checks automatically. My team reclaimed 15+ hours per week — and our tenants are happier because they get instant answers at 2AM if needed."</p>
+          <p class="testimonial-text">"I used to spend half my day fielding tenant calls. AskDwell handles lease questions, maintenance scheduling, and rent status checks automatically. My team reclaimed 15+ hours per week — and tenants get instant answers even at 2AM."</p>
           <div class="testimonial-author">
             <div class="testimonial-avatar">MB</div>
             <div>
@@ -295,7 +326,7 @@
           </div>
         </div>
 
-        <!-- Aileen Lai — Property Management Team -->
+        <!-- Aileen Lai -->
         <div class="testimonial-card fade-in">
           <div class="testimonial-stars">★★★★★</div>
           <p class="testimonial-text">"We piloted AskDwell across 3 properties before rolling it out portfolio-wide. Zero missed vendor appointments since we deployed. The maintenance scheduling and tenant communication automation is genuinely flawless."</p>
@@ -312,7 +343,7 @@
         <div class="testimonial-card testimonial-card-tenant fade-in">
           <div class="testimonial-tenant-badge">🏠 Verified Tenant</div>
           <div class="testimonial-stars">★★★★★</div>
-          <p class="testimonial-text">"I messaged AskDwell at midnight about a broken heater and had a repair scheduled by morning. I didn't have to chase anyone down or wait on hold. It felt like having a building manager who's always available. Honestly changed how I feel about renting."</p>
+          <p class="testimonial-text">"I messaged AskDwell at midnight about a broken heater and had a repair scheduled by morning. It felt like having a building manager who's always available. Honestly changed how I feel about renting."</p>
           <div class="testimonial-author">
             <div class="testimonial-avatar testimonial-avatar-tenant">SK</div>
             <div>
@@ -365,7 +396,15 @@
       <div class="footer-top">
         <div class="footer-brand">
           <div class="nav-logo">
-            <img src="askdwell-logo.png" alt="AskDwell" style="height:32px; object-fit:contain;" />
+            <svg height="28" viewBox="0 0 180 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="AskDwell">
+              <path d="M14 20v8h5v-5h4v5h5v-8L18 12z" fill="#4ECDC4"/>
+              <path d="M10 22l8-10 8 10" stroke="#4ECDC4" stroke-width="2" stroke-linecap="round"/>
+              <circle cx="27" cy="14" r="5" fill="#FD451E" opacity="0.9"/>
+              <circle cx="26" cy="14" r="1.2" fill="white"/>
+              <circle cx="28.5" cy="14" r="1.2" fill="white"/>
+              <text x="38" y="24" font-family="Inter, sans-serif" font-weight="800" font-size="18" fill="white">Ask</text>
+              <text x="73" y="24" font-family="Inter, sans-serif" font-weight="800" font-size="18" fill="#4ECDC4">Dwell</text>
+            </svg>
           </div>
           <p>AI-native property management for the modern era. A product of Collab Z Inc.</p>
           <div class="footer-pre-ipo">Pre-IPO · NASDAQ: CLBZ (pending)</div>
