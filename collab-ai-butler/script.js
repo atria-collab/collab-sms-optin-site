@@ -62,7 +62,7 @@ demoForm.addEventListener('submit', async (e) => {
     const formData = new FormData();
     formData.append('email', email);
     formData.append('_subject', 'New AskDwell Demo Request from ' + email);
-    formData.append('_cc', 'CC_EMAIL_PLACEHOLDER');
+    formData.append('_cc', 'jakob.stolzenberg@gmail.com');
     formData.append('_template', 'table');
     formData.append('_captcha', 'false');
 
