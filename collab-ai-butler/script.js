@@ -159,3 +159,88 @@ const statObserver = new IntersectionObserver((entries) => {
 }, { threshold: 0.5 });
 
 statNums.forEach(el => statObserver.observe(el));
+
+// ============================================
+// ASKDWELL — INTERACTIVE DEMO
+// ============================================
+
+const demoScenarios = {
+  maintenance: [
+    { role: 'tenant', avatar: 'T', text: "My kitchen faucet has been leaking for 3 days. Can you help?" },
+    { role: 'ai', avatar: '✦', text: "I've logged Work Order #WO-2847 for your leaky faucet. A certified plumber is scheduled for tomorrow, Thursday May 29 between 10AM–12PM. I've notified your property manager and will send you a reminder 1 hour before. Is the time slot convenient? 🔧" },
+    { role: 'tenant', avatar: 'T', text: "Yes that works, thank you!" },
+    { role: 'ai', avatar: '✦', text: "Perfect! The plumber's name is Carlos from Swift Plumbing. If you can't be there, I can coordinate a key release with the property team. ✅" }
+  ],
+  scheduling: [
+    { role: 'tenant', avatar: 'T', text: "I need my HVAC serviced before summer. Can you schedule this?" },
+    { role: 'ai', avatar: '✦', text: "Found 3 HVAC technicians in our vendor network. Earliest slot: Friday May 30, 9AM–11AM with Pro Climate Services (4.8★, 12 past jobs at your property). Shall I book it? 📅" },
+    { role: 'tenant', avatar: 'T', text: "Yes please book it" },
+    { role: 'ai', avatar: '✦', text: "Done! HVAC service booked — Work Order #WO-2891 created. I've added this to your property manager's calendar and will remind you the evening before. ✅" }
+  ],
+  lease: [
+    { role: 'tenant', avatar: 'T', text: "When does my lease expire? Can I renew early?" },
+    { role: 'ai', avatar: '✦', text: "Your lease runs through February 28, 2027 — 9 months remaining. Yes, early renewal is available with a rate lock guarantee. Want me to notify your property manager to start the process? 📋" },
+    { role: 'tenant', avatar: 'T', text: "What's the early termination policy?" },
+    { role: 'ai', avatar: '✦', text: "Your lease requires 60 days written notice and a fee equal to 2 months' rent. Exceptions apply for job relocation, medical emergencies, and military deployment. Want me to connect you with the leasing team to discuss your options? 🏠" }
+  ],
+  rent: [
+    { role: 'tenant', avatar: 'T', text: "I paid rent yesterday but my portal still shows it as due. Is it processed?" },
+    { role: 'ai', avatar: '✦', text: "Your payment of $2,450 was received yesterday at 3:42 PM via ACH transfer. It's processing and will reflect in the portal within 1 business day — no late fee applies. 💳" },
+    { role: 'tenant', avatar: 'T', text: "Can I set up autopay?" },
+    { role: 'ai', avatar: '✦', text: "Absolutely! Autopay will draft on the 1st of each month with a 3-day advance notice. I'll send you a secure link to authorize right now. ✅" }
+  ],
+  services: [
+    { role: 'tenant', avatar: 'T', text: "Can you recommend a good Italian restaurant nearby that delivers?" },
+    { role: 'ai', avatar: '✦', text: "Based on your location at 1773 Oxford St, Berkeley: 🍝 Chez Panisse Café (0.3mi, 4.9★), Trattoria La Siciliana (0.5mi, 4.7★), Pasta! (0.7mi, 4.6★) — all available on DoorDash and Uber Eats. Want the delivery link? 🍕" },
+    { role: 'tenant', avatar: 'T', text: "Also any professional laundry services nearby?" },
+    { role: 'ai', avatar: '✦', text: "For laundry near your unit: 👔 Pressed (pickup & delivery, 4.8★ — picks up from your door!), Liberty Cleaners (0.4mi, same-day service). Pressed offers a free first pickup for Collab Home residents. Want the referral link? 🧺" }
+  ],
+  emergency: [
+    { role: 'tenant', avatar: 'T', text: "There's water flooding from my upstairs neighbor's unit into my bathroom!" },
+    { role: 'ai', avatar: '✦', text: "🚨 Emergency alert sent to your property manager RIGHT NOW! Maintenance is en route. Turn off your bathroom water shut-off valve (under the sink), move valuables away, and document with photos. ETA: 20–30 minutes. Are you safe? 🆘" },
+    { role: 'tenant', avatar: 'T', text: "Yes I'm safe. When will someone arrive?" },
+    { role: 'ai', avatar: '✦', text: "Emergency maintenance (Carlos, 415-555-0123) is en route — ETA 22 minutes. Your manager Sarah has been notified and will call you within 5 minutes. I've opened an emergency work order and flagged the upstairs unit. I'll update you every 10 minutes. ✅" }
+  ]
+};
+
+function renderDemo(scenario) {
+  const chatEl = document.getElementById('demo-chat');
+  if (!chatEl) return;
+  chatEl.innerHTML = '';
+
+  const messages = demoScenarios[scenario] || [];
+  messages.forEach((msg, i) => {
+    const div = document.createElement('div');
+    div.className = `demo-msg ${msg.role}`;
+    div.style.animationDelay = `${i * 0.25}s`;
+    div.innerHTML = `
+      <div class="demo-avatar">${msg.avatar}</div>
+      <div class="demo-bubble">${msg.text}</div>
+    `;
+    chatEl.appendChild(div);
+  });
+}
+
+// Attach tab click handlers
+document.querySelectorAll('.demo-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.demo-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    renderDemo(tab.dataset.scenario);
+  });
+});
+
+// Load first scenario
+renderDemo('maintenance');
+
+// ============================================
+// ASKDWELL — TEST BUILD BADGE
+// ============================================
+(function() {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('test') === '1') {
+    const badge = document.getElementById('test-badge');
+    if (badge) badge.style.display = 'block';
+    document.title = document.title + ' (Test)';
+  }
+})();

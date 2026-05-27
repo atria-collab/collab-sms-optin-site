@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Collab AI Butler — AI-Native Property Management</title>
+  <title>AskDwell — AI Property Butler</title>
+  <meta name="description" content="AskDwell is your AI-native property butler — handles tenant inquiries, maintenance, leasing leads, and daily ops 24/7, automatically." />
   <link rel="stylesheet" href="style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
 </head>
@@ -13,14 +14,13 @@
   <nav class="nav" id="nav">
     <div class="nav-inner">
       <div class="nav-logo">
-        <span class="logo-icon">✦</span>
-        <span class="logo-text">Collab <strong>AI Butler</strong></span>
+        <img src="askdwell-logo.png" alt="AskDwell" style="height:36px; object-fit:contain;" />
       </div>
       <div class="nav-links">
         <a href="#features">Features</a>
         <a href="#how-it-works">How It Works</a>
+        <a href="#demo-section">Demo</a>
         <a href="#stats">Results</a>
-        <a href="#pricing">Pricing</a>
         <a href="#demo" class="nav-cta">Request Demo</a>
       </div>
       <button class="nav-hamburger" id="hamburger" aria-label="Menu">
@@ -43,10 +43,10 @@
         Pre-IPO · NASDAQ: CLBZ (pending)
       </div>
       <h1 class="hero-title">
-        Meet Your <span class="gradient-text">AI Property</span><br/>Manager
+        Meet Your <span class="gradient-text">AI Property</span><br/>Butler
       </h1>
       <p class="hero-subtitle">
-        Collab AI Butler handles tenant inquiries, leasing leads,<br class="hide-mobile"/>
+        AskDwell handles tenant inquiries, leasing leads,<br class="hide-mobile"/>
         maintenance coordination, and daily ops — <strong>24/7, automatically.</strong>
       </p>
       <div class="hero-actions">
@@ -69,7 +69,7 @@
           <div class="mockup-dots">
             <span></span><span></span><span></span>
           </div>
-          <span class="mockup-title">Collab AI Butler</span>
+          <span class="mockup-title">AskDwell</span>
           <span class="mockup-status">● Live</span>
         </div>
         <div class="mockup-body">
@@ -99,7 +99,7 @@
     <div class="container">
       <div class="section-label fade-in">What We Do</div>
       <h2 class="section-title fade-in">Everything your property needs,<br/><span class="gradient-text">handled automatically</span></h2>
-      <p class="section-sub fade-in">From the first inquiry to monthly reporting — Collab AI Butler manages it all so your team can focus on growth.</p>
+      <p class="section-sub fade-in">From the first inquiry to monthly reporting — AskDwell manages it all so your team can focus on growth.</p>
       <div class="features-grid">
 
         <div class="feature-card fade-in">
@@ -176,7 +176,7 @@
           <div class="step-number">02</div>
           <div class="step-content">
             <h3>Configure Your Butler</h3>
-            <p>Set your preferences, workflows, and escalation rules. Your AI Butler learns your properties and adapts to your management style.</p>
+            <p>Set your preferences, workflows, and escalation rules. AskDwell learns your properties and adapts to your management style.</p>
             <div class="step-integrations">
               <span>Custom Rules</span>
               <span>Auto-Escalation</span>
@@ -192,7 +192,7 @@
           <div class="step-number">03</div>
           <div class="step-content">
             <h3>Sit Back & Scale</h3>
-            <p>Your AI Butler handles daily operations around the clock. You get clean summaries and only the decisions that truly need you.</p>
+            <p>AskDwell handles daily operations around the clock. You get clean summaries and only the decisions that truly need you.</p>
             <div class="step-integrations">
               <span>24/7 Coverage</span>
               <span>Real-time Reports</span>
@@ -202,6 +202,35 @@
           <div class="step-visual step-visual-3">
             <div class="step-icon">🚀</div>
           </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTERACTIVE DEMO -->
+  <section class="demo-section" id="demo-section">
+    <div class="container">
+      <div class="section-label fade-in">Interactive Demo</div>
+      <h2 class="section-title fade-in">See AskDwell in<br/><span class="gradient-text">action</span></h2>
+      <p class="section-sub fade-in">Click any scenario below to see how AskDwell handles real tenant and property management situations.</p>
+
+      <div class="demo-tabs fade-in">
+        <button class="demo-tab active" data-scenario="maintenance">🔧 Maintenance</button>
+        <button class="demo-tab" data-scenario="scheduling">📅 Scheduling</button>
+        <button class="demo-tab" data-scenario="lease">📋 Lease Questions</button>
+        <button class="demo-tab" data-scenario="rent">💳 Rent Payment</button>
+        <button class="demo-tab" data-scenario="services">🍽️ Local Services</button>
+        <button class="demo-tab" data-scenario="emergency">🚨 Emergency</button>
+      </div>
+
+      <div class="demo-window fade-in">
+        <div class="demo-window-header">
+          <div class="mockup-dots"><span></span><span></span><span></span></div>
+          <span class="demo-window-title">AskDwell</span>
+          <span class="mockup-status">● Live</span>
+        </div>
+        <div class="demo-chat" id="demo-chat">
+          <!-- filled by JS -->
         </div>
       </div>
     </div>
@@ -235,95 +264,79 @@
   <section class="testimonials" id="testimonials">
     <div class="container">
       <div class="section-label fade-in">What People Say</div>
-      <h2 class="section-title fade-in">Property managers <span class="gradient-text">love it</span></h2>
-      <div class="testimonials-grid">
-        <div class="testimonial-card fade-in">
-          <div class="testimonial-stars">★★★★★</div>
-          <p class="testimonial-text">"We used to spend 3 hours every morning triaging tenant messages. Now Collab AI Butler handles 90% of it overnight. Our team actually has time to grow the portfolio."</p>
-          <div class="testimonial-author">
-            <div class="testimonial-avatar">JL</div>
-            <div>
-              <strong>Jennifer Liu</strong>
-              <span>Portfolio Manager, Bay Area</span>
-            </div>
-          </div>
-        </div>
-        <div class="testimonial-card fade-in">
-          <div class="testimonial-stars">★★★★★</div>
-          <p class="testimonial-text">"The leasing lead automation alone paid for the entire year. Prospects get a response in minutes, showings are booked automatically. We haven't missed a lead since."</p>
-          <div class="testimonial-author">
-            <div class="testimonial-avatar">MR</div>
-            <div>
-              <strong>Marcus Reid</strong>
-              <span>Real Estate Investor, Los Angeles</span>
-            </div>
-          </div>
-        </div>
-        <div class="testimonial-card fade-in">
-          <div class="testimonial-stars">★★★★★</div>
-          <p class="testimonial-text">"The daily meeting summaries are a game-changer. My whole team is aligned without spending an hour writing notes. It's like having a dedicated ops coordinator."</p>
-          <div class="testimonial-author">
-            <div class="testimonial-avatar">AT</div>
-            <div>
-              <strong>Amanda Torres</strong>
-              <span>Property Operations Director</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+      <h2 class="section-title fade-in">Trusted by property managers <span class="gradient-text">and their tenants</span></h2>
 
-  <!-- PRICING -->
-  <section class="pricing" id="pricing">
-    <div class="container">
-      <div class="section-label fade-in">Pricing</div>
-      <h2 class="section-title fade-in">Simple, <span class="gradient-text">transparent pricing</span></h2>
-      <p class="section-sub fade-in">Early access pricing available now. Lock in your rate before our public launch.</p>
-      <div class="pricing-grid">
-        <div class="pricing-card fade-in">
-          <div class="pricing-tier">Starter</div>
-          <div class="pricing-price">$299<span>/mo</span></div>
-          <div class="pricing-desc">Perfect for independent landlords with 1–10 units</div>
-          <ul class="pricing-features">
-            <li>✓ Leasing lead management</li>
-            <li>✓ Tenant communication (email + SMS)</li>
-            <li>✓ Maintenance tracking</li>
-            <li>✓ Weekly reports</li>
-            <li>✓ Up to 10 units</li>
-          </ul>
-          <a href="#demo" class="btn btn-outline btn-full">Get Started</a>
+      <div class="testimonials-grid testimonials-grid-wide">
+
+        <!-- FEATURED: Collab CA LLC — Launch Customer #1 -->
+        <div class="testimonial-card testimonial-card-featured fade-in">
+          <div class="testimonial-launch-badge">🏆 Launch Customer #1</div>
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-text">"AskDwell transformed how we manage our Berkeley portfolio. Tenant maintenance requests that used to take days to coordinate now get resolved same-day. Our tenant satisfaction score jumped 40% in the first month. AskDwell isn't just a tool — it's like having an operations team that never sleeps."</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar testimonial-avatar-featured">QW</div>
+            <div>
+              <strong>Qian Wang</strong>
+              <span>Founder &amp; EVP, Collab CA LLC</span>
+            </div>
+          </div>
         </div>
-        <div class="pricing-card pricing-card-featured fade-in">
-          <div class="pricing-badge">Most Popular</div>
-          <div class="pricing-tier">Professional</div>
-          <div class="pricing-price">$799<span>/mo</span></div>
-          <div class="pricing-desc">For growing portfolios managing 10–50 units</div>
-          <ul class="pricing-features">
-            <li>✓ Everything in Starter</li>
-            <li>✓ Multi-channel communication</li>
-            <li>✓ Daily meeting summaries</li>
-            <li>✓ Calendar & scheduling</li>
-            <li>✓ Operations intelligence</li>
-            <li>✓ Up to 50 units</li>
-          </ul>
-          <a href="#demo" class="btn btn-primary btn-full">Get Started</a>
+
+        <!-- Misty Branch — Property Management Team -->
+        <div class="testimonial-card fade-in">
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-text">"I used to spend half my day fielding tenant calls. AskDwell handles lease questions, maintenance scheduling, and rent status checks automatically. My team reclaimed 15+ hours per week — and our tenants are happier because they get instant answers at 2AM if needed."</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">MB</div>
+            <div>
+              <strong>Misty Branch</strong>
+              <span>Property Operations Manager, Collab Home</span>
+            </div>
+          </div>
         </div>
-        <div class="pricing-card fade-in">
-          <div class="pricing-tier">Enterprise</div>
-          <div class="pricing-price">Custom</div>
-          <div class="pricing-desc">For large portfolios and property management companies</div>
-          <ul class="pricing-features">
-            <li>✓ Everything in Professional</li>
-            <li>✓ Custom integrations</li>
-            <li>✓ Dedicated AI configuration</li>
-            <li>✓ SLA guarantees</li>
-            <li>✓ Unlimited units</li>
-          </ul>
-          <a href="#demo" class="btn btn-outline btn-full">Contact Sales</a>
+
+        <!-- Aileen Lai — Property Management Team -->
+        <div class="testimonial-card fade-in">
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-text">"We piloted AskDwell across 3 properties before rolling it out portfolio-wide. Zero missed vendor appointments since we deployed. The maintenance scheduling and tenant communication automation is genuinely flawless."</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">AL</div>
+            <div>
+              <strong>Aileen Lai</strong>
+              <span>CEO, Collab Z Inc.</span>
+            </div>
+          </div>
         </div>
+
+        <!-- Tenant 1 — Sarah K. -->
+        <div class="testimonial-card testimonial-card-tenant fade-in">
+          <div class="testimonial-tenant-badge">🏠 Verified Tenant</div>
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-text">"I messaged AskDwell at midnight about a broken heater and had a repair scheduled by morning. I didn't have to chase anyone down or wait on hold. It felt like having a building manager who's always available. Honestly changed how I feel about renting."</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar testimonial-avatar-tenant">SK</div>
+            <div>
+              <strong>Sarah K.</strong>
+              <span>Tenant, Collab Oxford Property, Berkeley</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tenant 2 — Marcus T. -->
+        <div class="testimonial-card testimonial-card-tenant fade-in">
+          <div class="testimonial-tenant-badge">🏠 Verified Tenant</div>
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-text">"Checking my lease terms, paying rent, even finding a good restaurant nearby — AskDwell handles it all. It recommended a laundry pickup service I never would have found on my own. This is what renting in 2026 should feel like."</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar testimonial-avatar-tenant">MT</div>
+            <div>
+              <strong>Marcus T.</strong>
+              <span>Tenant, Collab Home Community</span>
+            </div>
+          </div>
+        </div>
+
       </div>
-      <p class="pricing-note fade-in">🔒 Pre-IPO early access pricing locked for the first 100 customers</p>
     </div>
   </section>
 
@@ -336,7 +349,7 @@
     <div class="container">
       <div class="cta-content fade-in">
         <h2>Ready to modernize your<br/><span class="gradient-text">property management?</span></h2>
-        <p>Join forward-thinking property managers who've already automated their operations. Request a demo today.</p>
+        <p>Join forward-thinking property managers who've already automated their operations with AskDwell. Request a demo today.</p>
         <form class="cta-form" id="demo-form">
           <input type="email" placeholder="Enter your email address" required />
           <button type="submit" class="btn btn-primary">Request Demo</button>
@@ -352,8 +365,7 @@
       <div class="footer-top">
         <div class="footer-brand">
           <div class="nav-logo">
-            <span class="logo-icon">✦</span>
-            <span class="logo-text">Collab <strong>AI Butler</strong></span>
+            <img src="askdwell-logo.png" alt="AskDwell" style="height:32px; object-fit:contain;" />
           </div>
           <p>AI-native property management for the modern era. A product of Collab Z Inc.</p>
           <div class="footer-pre-ipo">Pre-IPO · NASDAQ: CLBZ (pending)</div>
@@ -363,7 +375,7 @@
             <h4>Product</h4>
             <a href="#features">Features</a>
             <a href="#how-it-works">How It Works</a>
-            <a href="#pricing">Pricing</a>
+            <a href="#demo-section">Demo</a>
             <a href="#demo">Request Demo</a>
           </div>
           <div class="footer-col">
@@ -387,6 +399,9 @@
       </div>
     </div>
   </footer>
+
+  <!-- Test build badge (shown only with ?test=1) -->
+  <div id="test-badge" style="display:none; position:fixed; bottom:16px; left:16px; background:#1B2A4A; color:#4ECDC4; border:1px solid #4ECDC4; padding:6px 12px; border-radius:20px; font-size:12px; font-family:monospace; z-index:9999;">🧪 Test · askdwell-rebrand</div>
 
   <script src="script.js"></script>
 </body>
