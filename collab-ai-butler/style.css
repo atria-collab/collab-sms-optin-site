@@ -74,7 +74,7 @@ body {
   border-bottom: 1px solid var(--border);
 }
 .nav-inner {
-  max-width: 1160px; margin: 0 auto; padding: 20px 24px;
+  width: 100%; padding: 20px 40px;
   display: flex; align-items: center; justify-content: space-between;
 }
 .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
