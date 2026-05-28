@@ -360,7 +360,7 @@ body {
    ============================================ */
 
 .demo-section {
-  padding: 120px 0;
+  padding: 60px 0;
   background: linear-gradient(180deg, var(--dark) 0%, #0D1015 50%, var(--dark) 100%);
   position: relative;
 }
