@@ -116,10 +116,11 @@ const aiMessages = [
 let msgIndex = 0;
 
 function addAIMessage() {
+  if (!chatBody || msgIndex >= aiMessages.length) return; // stop after all messages shown
+
   const typing = chatBody.querySelector('.typing')?.closest('.chat-msg');
   if (!typing) return;
 
-  // Replace typing with a real message
   const newMsg = document.createElement('div');
   newMsg.className = 'chat-msg ai';
   newMsg.style.opacity = '0';
@@ -127,7 +128,7 @@ function addAIMessage() {
   newMsg.style.transition = 'all 0.3s ease';
   newMsg.innerHTML = `
     <div class="chat-avatar">✦</div>
-    <div class="chat-bubble">${aiMessages[msgIndex % aiMessages.length]}</div>
+    <div class="chat-bubble">${aiMessages[msgIndex]}</div>
   `;
   chatBody.insertBefore(newMsg, typing);
   msgIndex++;
@@ -139,20 +140,27 @@ function addAIMessage() {
     });
   });
 
-  // Remove old messages if too many (keep last 4)
-  const allMsgs = chatBody.querySelectorAll('.chat-msg:not(.chat-msg:last-child)');
-  if (allMsgs.length > 4) {
+  // Keep max 3 messages + typing indicator
+  const allMsgs = chatBody.querySelectorAll('.chat-msg:not(:last-child)');
+  if (allMsgs.length > 3) {
     allMsgs[0].style.opacity = '0';
     setTimeout(() => allMsgs[0].remove(), 300);
   }
 
-  // Scroll to bottom
   chatBody.scrollTop = chatBody.scrollHeight;
+
+  // Schedule next only if more messages remain
+  if (msgIndex < aiMessages.length) {
+    setTimeout(addAIMessage, 4000);
+  }
+  // When done, hide the typing indicator cleanly
+  if (msgIndex >= aiMessages.length) {
+    setTimeout(() => { if (typing) typing.style.opacity = '0.3'; }, 1000);
+  }
 }
 
-// Start cycling messages
-setTimeout(addAIMessage, 3000);
-setInterval(addAIMessage, 5000);
+// Start after a short delay
+setTimeout(addAIMessage, 2500);
 
 // ---- STAT COUNTER ANIMATION ----
 function animateCounter(el, target, suffix = '', prefix = '') {
