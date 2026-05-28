@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@800;900&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:#151718; padding:32px; display:flex; flex-direction:column; gap:32px; width:520px; }
+.row { display:flex; align-items:center; gap:16px; padding:20px 24px; background:#1C1F20; border-radius:12px; border:1px solid rgba(255,255,255,0.06); }
+.lbl { color:#444; font-size:11px; font-family:Inter,sans-serif; font-weight:800; letter-spacing:1px; width:20px; }
+</style>
+</head>
+<body>
+
+<!-- A: Location pin -->
+<div class="row">
+<div class="lbl">A</div>
+<svg height="40" viewBox="0 0 280 40" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="18" cy="15" r="13" fill="#4ECDC4" opacity="0.12"/>
+  <circle cx="18" cy="15" r="8" fill="#4ECDC4"/>
+  <circle cx="18" cy="15" r="3" fill="#151718"/>
+  <line x1="18" y1="23" x2="18" y2="36" stroke="#4ECDC4" stroke-width="2.5" stroke-linecap="round"/>
+  <text x="40" y="27" font-family="Inter,sans-serif" font-weight="900" font-size="22" fill="white">Ask</text>
+  <text x="96" y="27" font-family="Inter,sans-serif" font-weight="900" font-size="22" fill="#4ECDC4">Dwell</text>
+</svg>
+</div>
+
+<!-- B: Orange square monogram -->
+<div class="row">
+<div class="lbl">B</div>
+<svg height="44" viewBox="0 0 280 44" xmlns="http://www.w3.org/2000/svg">
+  <rect x="0" y="2" width="40" height="40" rx="10" fill="#FD451E"/>
+  <text x="20" y="30" font-family="Inter,sans-serif" font-weight="900" font-size="18" fill="white" text-anchor="middle">AD</text>
+  <text x="52" y="30" font-family="Inter,sans-serif" font-weight="900" font-size="22" fill="white">Ask</text>
+  <text x="104" y="30" font-family="Inter,sans-serif" font-weight="900" font-size="22" fill="#4ECDC4">Dwell</text>
+  <text x="52" y="42" font-family="Inter,sans-serif" font-weight="700" font-size="9" fill="#555" letter-spacing="1.5">AI PROPERTY AGENT</text>
+</svg>
+</div>
+
+<!-- C: Chat bubble (3 dots) -->
+<div class="row">
+<div class="lbl">C</div>
+<svg height="44" viewBox="0 0 280 44" xmlns="http://www.w3.org/2000/svg">
+  <rect x="0" y="2" width="44" height="32" rx="10" fill="#4ECDC4"/>
+  <polygon points="6,34 20,34 12,44" fill="#4ECDC4"/>
+  <circle cx="11" cy="18" r="4" fill="#151718"/>
+  <circle cx="22" cy="18" r="4" fill="#151718"/>
+  <circle cx="33" cy="18" r="4" fill="#151718"/>
+  <text x="56" y="28" font-family="Inter,sans-serif" font-weight="900" font-size="22" fill="white">Ask</text>
+  <text x="112" y="28" font-family="Inter,sans-serif" font-weight="900" font-size="22" fill="#4ECDC4">Dwell</text>
+</svg>
+</div>
+
+<!-- D: Arch / door -->
+<div class="row">
+<div class="lbl">D</div>
+<svg height="44" viewBox="0 0 280 44" xmlns="http://www.w3.org/2000/svg">
+  <path d="M6 42 V24 Q6 4 22 4 Q38 4 38 24 V42 Z" fill="none" stroke="#4ECDC4" stroke-width="2.8" stroke-linejoin="round"/>
+  <circle cx="33" cy="26" r="3.5" fill="#FD451E"/>
+  <text x="50" y="30" font-family="Inter,sans-serif" font-weight="900" font-size="22" fill="white">Ask</text>
+  <text x="106" y="30" font-family="Inter,sans-serif" font-weight="900" font-size="22" fill="#4ECDC4">Dwell</text>
+</svg>
+</div>
+
+<!-- E: House roofline -->
+<div class="row">
+<div class="lbl">E</div>
+<svg height="44" viewBox="0 0 280 44" xmlns="http://www.w3.org/2000/svg">
+  <path d="M4 42 V24 L22 6 L40 24 V42 Z" fill="none" stroke="white" stroke-width="2.8" stroke-linejoin="round"/>
+  <rect x="15" y="30" width="14" height="12" fill="#FD451E"/>
+  <text x="52" y="30" font-family="Inter,sans-serif" font-weight="900" font-size="22" fill="white">Ask</text>
+  <text x="108" y="30" font-family="Inter,sans-serif" font-weight="900" font-size="22" fill="#4ECDC4">Dwell</text>
+</svg>
+</div>
+
+</body>
+</html>
