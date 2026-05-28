@@ -617,11 +617,11 @@ body {
 }
 
 /* ---- Testimonial photo ---- */
-.testimonial-avatar-wrap { position: relative; flex-shrink: 0; }
+.testimonial-avatar-wrap { position: relative; flex-shrink: 0; width: 44px; height: 44px; }
 .testimonial-photo {
   width: 44px; height: 44px; border-radius: 50%; object-fit: cover;
-  border: 2px solid rgba(253,69,30,0.3);
+  border: 2px solid rgba(253,69,30,0.3); display: block;
 }
 .testimonial-avatar-wrap .testimonial-avatar {
-  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  width: 44px; height: 44px;
 }
