@@ -269,30 +269,6 @@ document.querySelectorAll('.demo-tab').forEach(tab => {
   });
 });
 
-// Audience toggle
-document.querySelectorAll('.audience-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.audience-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    const audience = btn.dataset.audience;
-    const tenantTabs = document.getElementById('demo-tabs-tenant');
-    const pmTabs = document.getElementById('demo-tabs-pm');
-    if (audience === 'tenant') {
-      tenantTabs.style.display = 'flex';
-      pmTabs.style.display = 'none';
-      tenantTabs.querySelectorAll('.demo-tab').forEach(t => t.classList.remove('active'));
-      tenantTabs.querySelector('.demo-tab').classList.add('active');
-      renderDemo('maintenance');
-    } else {
-      tenantTabs.style.display = 'none';
-      pmTabs.style.display = 'flex';
-      pmTabs.querySelectorAll('.demo-tab').forEach(t => t.classList.remove('active'));
-      pmTabs.querySelector('.demo-tab').classList.add('active');
-      renderDemo('pm_balances');
-    }
-  });
-});
-
 // Load first scenario
 renderDemo('maintenance');
 

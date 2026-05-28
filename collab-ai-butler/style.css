@@ -231,7 +231,7 @@ body {
 
 /* ---- STATS ---- */
 .stats-section { padding: 100px 0; }
-.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; }
+.stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; max-width: 720px; margin: 0 auto; }
 .stat-item {
   text-align: center; padding: 48px 24px;
   border-right: 1px solid var(--border);
