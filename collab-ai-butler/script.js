@@ -103,64 +103,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   });
 });
 
-// ---- TYPING ANIMATION LOOP ----
-// The typing indicator in the mockup already runs via CSS,
-// but we can cycle new "AI messages" to make it feel live
-const chatBody = document.querySelector('.mockup-body');
-const aiMessages = [
-  "Rent roll updated. 2 units with outstanding balances flagged for your review. 📋",
-  "New Apartments.com inquiry — unit 2B, 2BR/1BA, June move-in. Auto-reply sent. 🏠",
-  "Oxford showing confirmed for Thursday 2PM. Tenant notified via email + SMS. ✅",
-  "Weekly property report ready. Occupancy: 96%. Revenue on track. 📊"
-];
-let msgIndex = 0;
-
-function addAIMessage() {
-  if (!chatBody || msgIndex >= aiMessages.length) return; // stop after all messages shown
-
-  const typing = chatBody.querySelector('.typing')?.closest('.chat-msg');
-  if (!typing) return;
-
-  const newMsg = document.createElement('div');
-  newMsg.className = 'chat-msg ai';
-  newMsg.style.opacity = '0';
-  newMsg.style.transform = 'translateY(8px)';
-  newMsg.style.transition = 'all 0.3s ease';
-  newMsg.innerHTML = `
-    <div class="chat-avatar">✦</div>
-    <div class="chat-bubble">${aiMessages[msgIndex]}</div>
-  `;
-  chatBody.insertBefore(newMsg, typing);
-  msgIndex++;
-
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      newMsg.style.opacity = '1';
-      newMsg.style.transform = 'translateY(0)';
-    });
-  });
-
-  // Keep max 3 messages + typing indicator
-  const allMsgs = chatBody.querySelectorAll('.chat-msg:not(:last-child)');
-  if (allMsgs.length > 3) {
-    allMsgs[0].style.opacity = '0';
-    setTimeout(() => allMsgs[0].remove(), 300);
-  }
-
-  chatBody.scrollTop = chatBody.scrollHeight;
-
-  // Schedule next only if more messages remain
-  if (msgIndex < aiMessages.length) {
-    setTimeout(addAIMessage, 4000);
-  }
-  // When done, hide the typing indicator cleanly
-  if (msgIndex >= aiMessages.length) {
-    setTimeout(() => { if (typing) typing.style.opacity = '0.3'; }, 1000);
-  }
-}
-
-// Start after a short delay
-setTimeout(addAIMessage, 2500);
+// Hero mockup is static — no JS cycling needed
 
 // ---- STAT COUNTER ANIMATION ----
 function animateCounter(el, target, suffix = '', prefix = '') {
@@ -200,6 +143,18 @@ statNums.forEach(el => statObserver.observe(el));
 // ============================================
 
 const demoScenarios = {
+  pm_balances: [
+    { role: 'tenant', avatar: 'PM', text: "Which tenants have unpaid balances this month?" },
+    { role: 'ai', avatar: '✦', text: "3 units have outstanding balances: Oxford #204 ($1,200), Oxford #312 ($800), College Ave #1 ($950). Total outstanding: $2,950. Want me to send payment reminders to all three now? 💳" },
+    { role: 'tenant', avatar: 'PM', text: "Yes, send reminders to all of them." },
+    { role: 'ai', avatar: '✦', text: "Done — payment reminders sent via SMS and email to all 3 tenants ✅. I'll flag any non-responses after 48 hours and escalate automatically. Want a full rent roll report? 📋" }
+  ],
+  pm_maintenance: [
+    { role: 'tenant', avatar: 'PM', text: "What open maintenance requests do we have right now?" },
+    { role: 'ai', avatar: '✦', text: "2 open work orders: Unit 305 — leaky faucet (plumber scheduled tomorrow 10AM, tenant notified), Unit 108 — HVAC not cooling (vendor contacted, ETA Friday). 0 past-due orders this week. 🔧" },
+    { role: 'tenant', avatar: 'PM', text: "Has the tenant in 305 been updated?" },
+    { role: 'ai', avatar: '✦', text: "Yes — I sent the tenant in Unit 305 a confirmation this morning: plumber name, arrival window, and a 1-hour reminder is scheduled automatically. I'll notify you when the work order closes. ✅" }
+  ],
   maintenance: [
     { role: 'tenant', avatar: 'T', text: "My kitchen faucet has been leaking for 3 days. Can you help?" },
     { role: 'ai', avatar: '✦', text: "I've logged Work Order #WO-2847 for your leaky faucet. A certified plumber is scheduled for tomorrow, Thursday May 29 between 10AM–12PM. I've notified your property manager and will send you a reminder 1 hour before. Is the time slot convenient? 🔧" },
@@ -308,9 +263,33 @@ function renderDemo(scenario) {
 // Attach tab click handlers
 document.querySelectorAll('.demo-tab').forEach(tab => {
   tab.addEventListener('click', () => {
-    document.querySelectorAll('.demo-tab').forEach(t => t.classList.remove('active'));
+    tab.closest('.demo-tabs').querySelectorAll('.demo-tab').forEach(t => t.classList.remove('active'));
     tab.classList.add('active');
     renderDemo(tab.dataset.scenario);
+  });
+});
+
+// Audience toggle
+document.querySelectorAll('.audience-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.audience-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const audience = btn.dataset.audience;
+    const tenantTabs = document.getElementById('demo-tabs-tenant');
+    const pmTabs = document.getElementById('demo-tabs-pm');
+    if (audience === 'tenant') {
+      tenantTabs.style.display = 'flex';
+      pmTabs.style.display = 'none';
+      tenantTabs.querySelectorAll('.demo-tab').forEach(t => t.classList.remove('active'));
+      tenantTabs.querySelector('.demo-tab').classList.add('active');
+      renderDemo('maintenance');
+    } else {
+      tenantTabs.style.display = 'none';
+      pmTabs.style.display = 'flex';
+      pmTabs.querySelectorAll('.demo-tab').forEach(t => t.classList.remove('active'));
+      pmTabs.querySelector('.demo-tab').classList.add('active');
+      renderDemo('pm_balances');
+    }
   });
 });
 

@@ -77,21 +77,21 @@
           <span class="mockup-status">● Live</span>
         </div>
         <div class="mockup-body">
-          <div class="chat-msg ai">
-            <div class="chat-avatar">✦</div>
-            <div class="chat-bubble">New leasing lead from Apartments.com — Sarah Chen, 2BR, move-in June 1st. I've sent a welcome reply and booked a showing for Thursday 2PM. 🏠</div>
-          </div>
           <div class="chat-msg user">
-            <div class="chat-bubble">Perfect. Any maintenance updates?</div>
+            <div class="chat-bubble">Which tenants have unpaid balances this month?</div>
             <div class="chat-avatar user-av">PM</div>
           </div>
           <div class="chat-msg ai">
             <div class="chat-avatar">✦</div>
-            <div class="chat-bubble">3 work orders resolved today. Unit 405 HVAC — vendor confirmed 9AM tomorrow. I'll notify the tenant. ✅</div>
+            <div class="chat-bubble">3 units outstanding: Oxford #204 ($1,200), Oxford #312 ($800), College Ave #1 ($950). Total: $2,950. Send payment reminders now? 💳</div>
+          </div>
+          <div class="chat-msg user">
+            <div class="chat-bubble">Yes. Any open maintenance requests?</div>
+            <div class="chat-avatar user-av">PM</div>
           </div>
           <div class="chat-msg ai">
             <div class="chat-avatar">✦</div>
-            <div class="chat-bubble typing"><span></span><span></span><span></span></div>
+            <div class="chat-bubble">Reminders sent ✅ — 2 open requests: Unit 305 leaky faucet (plumber tmrw 10AM) and Unit 108 HVAC (vendor notified, ETA Friday). I'll update you when resolved. 🔧</div>
           </div>
         </div>
       </div>
@@ -195,15 +195,23 @@
     <div class="container">
       <div class="section-label fade-in">Interactive Demo</div>
       <h2 class="section-title fade-in">See AskDwell in<br/><span class="gradient-text">action</span></h2>
-      <p class="section-sub fade-in">Click any scenario below to see how AskDwell handles real tenant and property management situations.</p>
+      <p class="section-sub fade-in">AskDwell works for both tenants and property managers — handling everything from tenant questions to operations oversight. Our primary focus is delivering a seamless tenant experience, while giving property managers full visibility and control.</p>
 
-      <div class="demo-tabs fade-in">
-        <button class="demo-tab active" data-scenario="maintenance">🔧 Maintenance</button>
-        <button class="demo-tab" data-scenario="scheduling">📅 Scheduling</button>
+      <div class="demo-audience-toggle fade-in">
+        <button class="audience-btn active" data-audience="tenant">🏠 Tenant Scenarios</button>
+        <button class="audience-btn" data-audience="pm">📊 Property Manager Scenarios</button>
+      </div>
+
+      <div class="demo-tabs fade-in" id="demo-tabs-tenant">
+        <button class="demo-tab active" data-scenario="maintenance">🔧 Maintenance Request</button>
         <button class="demo-tab" data-scenario="lease">📋 Lease Questions</button>
         <button class="demo-tab" data-scenario="rent">💳 Rent Payment</button>
-        <button class="demo-tab" data-scenario="services">🍽️ Local Services</button>
         <button class="demo-tab" data-scenario="emergency">🚨 Emergency</button>
+      </div>
+      <div class="demo-tabs fade-in" id="demo-tabs-pm" style="display:none;">
+        <button class="demo-tab active" data-scenario="pm_balances">💳 Unpaid Balances</button>
+        <button class="demo-tab" data-scenario="pm_maintenance">🔧 Open Work Orders</button>
+        <button class="demo-tab" data-scenario="scheduling">📅 Vendor Scheduling</button>
       </div>
 
       <div class="demo-window fade-in">

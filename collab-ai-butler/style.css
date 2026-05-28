@@ -625,3 +625,17 @@ body {
 .testimonial-avatar-wrap .testimonial-avatar {
   width: 44px; height: 44px;
 }
+
+/* ---- Audience toggle (Tenant / PM) ---- */
+.demo-audience-toggle {
+  display: flex; gap: 12px; justify-content: center; margin-bottom: 20px; flex-wrap: wrap;
+}
+.audience-btn {
+  padding: 10px 24px; border-radius: 100px; border: 1px solid var(--border);
+  background: transparent; color: var(--text-muted); font-size: 14px; font-weight: 600;
+  cursor: pointer; transition: all 0.2s ease; font-family: inherit;
+}
+.audience-btn:hover { border-color: var(--primary); color: var(--primary); }
+.audience-btn.active {
+  background: var(--primary); border-color: var(--primary); color: white;
+}
