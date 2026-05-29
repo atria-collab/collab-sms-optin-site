@@ -66,7 +66,7 @@ demoForm.addEventListener('submit', async (e) => {
     formData.append('from_name', 'AskDwell Demo Request');
     formData.append('replyto', email);
     formData.append('to', 'hello@askdwell.ai');
-    formData.append('cc', 'jakob.stolzenberg@gmail.com,qian.wang@collabhome.io');
+    // Distribution handled by Atria forwarder — no CC here to avoid duplicates
 
     const res = await fetch('https://api.web3forms.com/submit', {
       method: 'POST',
