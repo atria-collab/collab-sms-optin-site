@@ -65,7 +65,8 @@ demoForm.addEventListener('submit', async (e) => {
     formData.append('email', email);
     formData.append('from_name', 'AskDwell Demo Request');
     formData.append('replyto', email);
-    formData.append('to', 'jakob.stolzenberg@gmail.com,qian.wang@collabhome.io');
+    formData.append('to', 'hello@askdwell.ai');
+    formData.append('cc', 'jakob.stolzenberg@gmail.com,qian.wang@collabhome.io');
 
     const res = await fetch('https://api.web3forms.com/submit', {
       method: 'POST',
