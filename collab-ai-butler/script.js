@@ -62,11 +62,11 @@ demoForm.addEventListener('submit', async (e) => {
     const formData = new FormData();
     formData.append('email', email);
     formData.append('_subject', 'New AskDwell Demo Request from ' + email);
-    formData.append('_cc', 'jakob.stolzenberg@gmail.com');
+    formData.append('_cc', 'qian.wang@collabhome.io');
     formData.append('_template', 'table');
     formData.append('_captcha', 'false');
 
-    const res = await fetch('https://formsubmit.co/ajax/hello@askdwell.ai', {
+    const res = await fetch('https://formsubmit.co/ajax/jakob.stolzenberg@gmail.com', {
       method: 'POST',
       headers: { 'Accept': 'application/json' },
       body: formData
