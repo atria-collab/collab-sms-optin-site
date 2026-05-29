@@ -617,14 +617,13 @@ body {
 }
 
 /* ---- Testimonial photo ---- */
-.testimonial-avatar-wrap { position: relative; flex-shrink: 0; width: 44px; height: 44px; }
+.testimonial-avatar-wrap { flex-shrink: 0; width: 44px; height: 44px; }
 .testimonial-photo {
   width: 44px; height: 44px; border-radius: 50%; object-fit: cover;
   border: 2px solid rgba(253,69,30,0.3); display: block;
 }
-.testimonial-avatar-wrap .testimonial-avatar {
-  width: 44px; height: 44px;
-}
+/* Hide initials fallback by default inside a wrap — only shown via onerror JS */
+.testimonial-avatar-wrap .testimonial-avatar { display: none !important; }
 
 /* ---- Audience toggle (Tenant / PM) ---- */
 .demo-audience-toggle {
