@@ -60,20 +60,20 @@ demoForm.addEventListener('submit', async (e) => {
 
   try {
     const formData = new FormData();
+    formData.append('access_key', 'c4ca479d-2263-4a7f-b123-78628ff9f2f4');
+    formData.append('subject', 'New AskDwell Demo Request from ' + email);
     formData.append('email', email);
-    formData.append('_subject', 'New AskDwell Demo Request from ' + email);
-    formData.append('_cc', 'qian.wang@collabhome.io');
-    formData.append('_template', 'table');
-    formData.append('_captcha', 'false');
+    formData.append('from_name', 'AskDwell Demo Request');
+    formData.append('replyto', email);
+    formData.append('to', 'jakob.stolzenberg@gmail.com,qian.wang@collabhome.io');
 
-    const res = await fetch('https://formsubmit.co/ajax/jakob.stolzenberg@gmail.com', {
+    const res = await fetch('https://api.web3forms.com/submit', {
       method: 'POST',
-      headers: { 'Accept': 'application/json' },
       body: formData
     });
 
     const data = await res.json();
-    if (data.success === 'true' || data.success === true) {
+    if (data.success) {
       btn.textContent = '✓ Request Sent!';
       btn.style.background = '#5CC489';
       emailInput.value = '';
