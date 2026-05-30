@@ -271,8 +271,26 @@ document.querySelectorAll('.demo-tab').forEach(tab => {
   });
 });
 
-// Load first scenario
-renderDemo('maintenance');
+// ---- TRIGGER ANIMATION WHEN DEMO SECTION ENTERS VIEWPORT ----
+// Instead of firing on page load (when the section is off-screen),
+// wait until the user scrolls the demo window into view.
+let demoHasStarted = false;
+const demoWindow = document.querySelector('.demo-window');
+if (demoWindow) {
+  const demoTriggerObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !demoHasStarted) {
+        demoHasStarted = true;
+        renderDemo('maintenance');
+        demoTriggerObserver.unobserve(demoWindow);
+      }
+    });
+  }, { threshold: 0.3 });
+  demoTriggerObserver.observe(demoWindow);
+} else {
+  // Fallback: fire immediately
+  renderDemo('maintenance');
+}
 
 // ============================================
 // ASKDWELL — TEST BUILD BADGE
