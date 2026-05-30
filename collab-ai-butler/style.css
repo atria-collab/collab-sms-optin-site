@@ -210,7 +210,7 @@ body {
 .steps { display: flex; flex-direction: column; gap: 0; margin-top: 60px; }
 .step {
   display: grid; grid-template-columns: 80px 1fr auto; gap: 32px;
-  align-items: center; padding: 40px 0;
+  align-items: center; padding: 20px 0;
 }
 .step-number { font-size: 48px; font-weight: 900; color: var(--border); letter-spacing: -2px; }
 .step-content h3 { font-size: 24px; font-weight: 700; margin-bottom: 12px; letter-spacing: -0.5px; }
@@ -227,7 +227,7 @@ body {
 .step-visual-1 { background: rgba(253,69,30,0.12); }
 .step-visual-2 { background: rgba(161,201,202,0.1); }
 .step-visual-3 { background: rgba(92,196,137,0.1); }
-.step-connector { width: 2px; height: 60px; background: var(--border); margin-left: 39px; }
+.step-connector { width: 2px; height: 30px; background: var(--border); margin-left: 39px; }
 
 /* ---- STATS ---- */
 .stats-section { padding: 100px 0; }
