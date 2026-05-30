@@ -48,8 +48,9 @@ hamburger.addEventListener('click', () => {
 });
 
 // ---- DEMO FORM ----
+// Form removed — replaced with Calendly embed
 const demoForm = document.getElementById('demo-form');
-demoForm.addEventListener('submit', async (e) => {
+if (demoForm) demoForm.addEventListener('submit', async (e) => {
   e.preventDefault();
   const emailInput = demoForm.querySelector('input');
   const email = emailInput.value.trim();
