@@ -295,7 +295,7 @@ body {
 .cta-orb-2 { width: 400px; height: 400px; background: rgba(161,201,202,0.08); bottom: -100px; right: -50px; }
 .cta-section > .container { position: relative; z-index: 1; }
 .cta-content { text-align: center; max-width: 640px; margin: 0 auto; }
-.cta-content h2 { font-size: clamp(36px, 5vw, 60px); font-weight: 900; letter-spacing: -2px; margin-bottom: 20px; }
+.cta-content h2 { font-size: clamp(28px, 4vw, 52px); font-weight: 900; letter-spacing: -2px; margin-bottom: 20px; }
 .cta-content p { font-size: 17px; color: var(--muted); margin-bottom: 40px; line-height: 1.6; }
 .cta-form { display: flex; gap: 12px; max-width: 480px; margin: 0 auto 16px; }
 .cta-form input {
