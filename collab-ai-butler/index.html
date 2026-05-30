@@ -352,14 +352,32 @@
         <p>Book a 30-minute demo and see AskDwell handle your toughest property ops challenges — live.</p>
       </div>
       <!-- Calendly inline widget begin -->
-      <div style="margin-top:32px;border-radius:16px;overflow:hidden;background:#1a1a1e;padding:2px;">
-        <div class="calendly-inline-widget" data-url="https://calendly.com/d/cytg-dvn-xdn?background_color=1a1a1e&text_color=f0f0f0&primary_color=fd451e&hide_gdpr_banner=1" style="min-width:320px;height:700px;"></div>
+      <div id="calendly-wrapper" style="margin-top:32px;border-radius:16px;background:#1a1a1e;padding:2px;">
+        <div class="calendly-inline-widget" id="calendly-widget" data-url="https://calendly.com/d/cytg-dvn-xdn?background_color=1a1a1e&text_color=f0f0f0&primary_color=fd451e&hide_gdpr_banner=1" style="min-width:320px;height:700px;"></div>
       </div>
       <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
+      <script>
+        // Auto-resize Calendly widget on confirmation page
+        window.addEventListener('message', function(e) {
+          if (e.origin !== 'https://calendly.com') return;
+          var data = e.data;
+          if (data && data.event) {
+            if (data.event === 'calendly.page_height' && data.payload && data.payload.height) {
+              var w = document.getElementById('calendly-widget');
+              if (w) w.style.height = Math.max(700, data.payload.height) + 'px';
+            }
+            if (data.event === 'calendly.event_scheduled') {
+              var w = document.getElementById('calendly-widget');
+              if (w) w.style.height = '600px';
+            }
+          }
+        });
+      </script>
       <style>
         .calendly-inline-widget iframe {
           filter: none;
           background: #1a1a1e !important;
+          border-radius: 14px;
         }
       </style>
       <!-- Calendly inline widget end -->
