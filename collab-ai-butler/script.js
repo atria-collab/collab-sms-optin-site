@@ -9,7 +9,15 @@ window.addEventListener('scroll', () => {
 });
 
 // ---- FADE IN ON SCROLL ----
-const fadeEls = document.querySelectorAll('.fade-in, .fade-in-delay');
+// Hero content is above the fold — animate it in immediately without waiting
+// for the IntersectionObserver (avoids invisible flash on load).
+const heroContent = document.querySelector('.hero-content');
+const heroMockup = document.querySelector('.hero-mockup');
+if (heroContent) setTimeout(() => heroContent.classList.add('visible'), 80);
+if (heroMockup) setTimeout(() => heroMockup.classList.add('visible'), 200);
+
+// All other fade-in elements use IntersectionObserver
+const fadeEls = document.querySelectorAll('.fade-in:not(.hero-content), .fade-in-delay:not(.hero-mockup)');
 const observer = new IntersectionObserver((entries) => {
   entries.forEach((entry, i) => {
     if (entry.isIntersecting) {
@@ -25,7 +33,7 @@ const observer = new IntersectionObserver((entries) => {
       observer.unobserve(entry.target);
     }
   });
-}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+}, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
 
 fadeEls.forEach(el => observer.observe(el));
 
@@ -124,21 +132,23 @@ function animateCounter(el, target, suffix = '', prefix = '') {
   requestAnimationFrame(tick);
 }
 
-// Observe stat numbers
-const statNums = document.querySelectorAll('.stat-number');
+// Observe stat numbers — targets both hero stats and client highlight stats
 const statObserver = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
       const el = entry.target;
-      const text = el.textContent;
-      if (text.includes('$3.1B')) animateCounter(el, 3.1, 'B+', '$');
-      else if (text.includes('50+')) animateCounter(el, 50, '+');
+      const text = el.textContent.trim();
+      if (text.includes('$3.1B'))       animateCounter(el, 3.1, 'B+', '$');
+      else if (text.includes('50+'))    animateCounter(el, 50, '+');
+      else if (text === '40%')          animateCounter(el, 40, '%');
+      else if (text.includes('15+'))    animateCounter(el, 15, '+ hrs');
       statObserver.unobserve(el);
     }
   });
 }, { threshold: 0.5 });
 
-statNums.forEach(el => statObserver.observe(el));
+// Hero <strong> stats + client highlight stat numbers
+document.querySelectorAll('.hero-stat strong, .client-stat-num').forEach(el => statObserver.observe(el));
 
 // ============================================
 // ASKDWELL — INTERACTIVE DEMO
@@ -229,7 +239,7 @@ function showTyping(chatEl) {
   return div;
 }
 
-function renderDemo(scenario) {
+function renderDemo(scenario, loop = true) {
   clearDemoTimers();
   const chatEl = document.getElementById('demo-chat');
   if (!chatEl) return;
@@ -239,7 +249,13 @@ function renderDemo(scenario) {
   let cursor = 0;
 
   function step() {
-    if (cursor >= messages.length) return;
+    if (cursor >= messages.length) {
+      // All messages played — pause then loop if enabled
+      if (loop) {
+        demoAnimTimer = setTimeout(() => renderDemo(scenario, true), 3500);
+      }
+      return;
+    }
     const msg = messages[cursor];
     cursor++;
 
@@ -267,13 +283,14 @@ document.querySelectorAll('.demo-tab').forEach(tab => {
   tab.addEventListener('click', () => {
     tab.closest('.demo-tabs').querySelectorAll('.demo-tab').forEach(t => t.classList.remove('active'));
     tab.classList.add('active');
-    renderDemo(tab.dataset.scenario);
+    renderDemo(tab.dataset.scenario, true);
   });
 });
 
 // ---- TRIGGER ANIMATION WHEN DEMO SECTION ENTERS VIEWPORT ----
-// Instead of firing on page load (when the section is off-screen),
-// wait until the user scrolls the demo window into view.
+// Wait until the demo window is visible before starting the chat animation.
+// Use the same threshold as the fade-in observer (0.15) so animation starts
+// right as the window becomes visible — no blank window flash.
 let demoHasStarted = false;
 const demoWindow = document.querySelector('.demo-window');
 if (demoWindow) {
@@ -281,15 +298,15 @@ if (demoWindow) {
     entries.forEach(entry => {
       if (entry.isIntersecting && !demoHasStarted) {
         demoHasStarted = true;
-        renderDemo('maintenance');
+        // Small delay to let the fade-in transition complete first
+        setTimeout(() => renderDemo('maintenance', true), 400);
         demoTriggerObserver.unobserve(demoWindow);
       }
     });
-  }, { threshold: 0.3 });
+  }, { threshold: 0.15 });
   demoTriggerObserver.observe(demoWindow);
 } else {
-  // Fallback: fire immediately
-  renderDemo('maintenance');
+  renderDemo('maintenance', true);
 }
 
 // ============================================
