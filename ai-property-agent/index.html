@@ -2,11 +2,391 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta http-equiv="refresh" content="0; url=https://askdwell.ai/" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AskDwell — AI Property Agent</title>
-  <script>window.location.replace('https://askdwell.ai/');</script>
+  <meta name="description" content="AskDwell is your AI property agent — handles tenant inquiries, maintenance, leasing leads, and daily ops 24/7, automatically." />
+  <link rel="stylesheet" href="style.css?v=20260530a" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
 </head>
 <body>
-  <p>Redirecting... <a href="https://askdwell.ai/">click here if not redirected</a></p>
+
+  <!-- NAV -->
+  <nav class="nav" id="nav">
+    <div class="nav-inner">
+      <div class="nav-logo">
+        <svg height="40" viewBox="0 0 220 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="AskDwell">
+          <!-- House roofline (Option E) — all orange -->
+          <path d="M4 42 V24 L22 6 L40 24 V42 Z" fill="none" stroke="#FD451E" stroke-width="3" stroke-linejoin="round"/>
+          <rect x="15" y="30" width="14" height="12" fill="#FD451E"/>
+          <!-- Wordmark -->
+          <text x="52" y="31" font-family="Inter, sans-serif" font-weight="900" font-size="24" fill="white">Ask</text>
+          <text x="104" y="31" font-family="Inter, sans-serif" font-weight="900" font-size="24" fill="#FD451E">Dwell</text>
+        </svg>
+      </div>
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#demo-section">How It Works</a>
+        <a href="#testimonials">Customer Stories</a>
+        <a href="#demo" class="nav-cta">Request Demo</a>
+      </div>
+      <button class="nav-hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="hero-bg">
+      <div class="hero-orb hero-orb-1"></div>
+      <div class="hero-orb hero-orb-2"></div>
+      <div class="hero-orb hero-orb-3"></div>
+      <div class="hero-grid"></div>
+    </div>
+    <div class="hero-content fade-in">
+      <!-- Pre-IPO badge removed per 谦哥 feedback -->
+      <h1 class="hero-title">
+        Meet Your <span class="gradient-text">AI Property Agent</span>
+      </h1>
+      <p class="hero-subtitle">
+        AskDwell handles tenant inquiries, leasing leads,<br class="hide-mobile"/>
+        maintenance coordination, and daily ops — <strong>24/7, automatically.</strong>
+      </p>
+      <div class="hero-actions">
+        <a href="#demo" class="btn btn-primary">Request a Demo</a>
+        <a href="#demo-section" class="btn btn-outline">
+          <span class="btn-play">▶</span> See How It Works
+        </a>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat"><strong>24/7</strong><span>Always-On Coverage</span></div>
+        <div class="hero-divider"></div>
+        <div class="hero-stat"><strong>$3.1B+</strong><span>Portfolio Managed by Our Team</span></div>
+        <div class="hero-divider"></div>
+        <div class="hero-stat"><strong>Instant</strong><span>Tenant Responses</span></div>
+      </div>
+    </div>
+    <div class="hero-mockup fade-in-delay">
+      <div class="mockup-card">
+        <div class="mockup-header">
+          <div class="mockup-dots">
+            <span></span><span></span><span></span>
+          </div>
+          <span class="mockup-title">AskDwell</span>
+          <span class="mockup-status">● Live</span>
+        </div>
+        <div class="mockup-body">
+          <div class="chat-msg user">
+            <div class="chat-bubble">Which tenants have unpaid balances this month?</div>
+            <div class="chat-avatar user-av">PM</div>
+          </div>
+          <div class="chat-msg ai">
+            <div class="chat-avatar">✦</div>
+            <div class="chat-bubble">3 units outstanding: Oxford #204 ($1,200), Oxford #312 ($800), College Ave #1 ($950). Total: $2,950. Send payment reminders now? 💳</div>
+          </div>
+          <div class="chat-msg user">
+            <div class="chat-bubble">Yes. Any open maintenance requests?</div>
+            <div class="chat-avatar user-av">PM</div>
+          </div>
+          <div class="chat-msg ai">
+            <div class="chat-avatar">✦</div>
+            <div class="chat-bubble">Reminders sent ✅ — 2 open requests: Unit 305 leaky faucet (plumber tmrw 10AM) and Unit 108 HVAC (vendor notified, ETA Friday). I'll update you when resolved. 🔧</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="features" id="features">
+    <div class="container">
+      <div class="section-label fade-in">What We Do</div>
+      <h2 class="section-title fade-in">Everything your property needs,<br/><span class="gradient-text">handled automatically</span></h2>
+      <p class="section-sub fade-in">AskDwell manages your daily property operations so your team can focus on growth.</p>
+      <div class="features-grid">
+
+        <div class="feature-card fade-in">
+          <div class="feature-icon" style="background: rgba(92,196,137,0.12); color:#5CC489">🔧</div>
+          <h3>Maintenance Coordination</h3>
+          <p>Routes and tracks work orders end-to-end. Communicates status updates to tenants and coordinates with vendors automatically.</p>
+          <div class="feature-tag">Operations</div>
+        </div>
+
+        <div class="feature-card fade-in">
+          <div class="feature-icon" style="background: rgba(253,69,30,0.12); color:#FD451E">📅</div>
+          <h3>Calendar & Scheduling</h3>
+          <p>Manages property manager schedules, sends reminders, coordinates viewings, and keeps your calendar perfectly organized.</p>
+          <div class="feature-tag">Productivity</div>
+        </div>
+
+        <div class="feature-card fade-in">
+          <div class="feature-icon" style="background: rgba(161,201,202,0.15); color:#A1C9CA">💬</div>
+          <h3>Tenant Communication</h3>
+          <p>Handles routine tenant inquiries 24/7 across email, WhatsApp, Discord, and SMS. Always responsive, always professional.</p>
+          <div class="feature-tag">Communication</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS — DEMO FIRST -->
+  <section class="demo-section" id="demo-section" style="padding-bottom:0">
+    <div class="container">
+      <div class="section-label fade-in">How It Works</div>
+      <h2 class="section-title fade-in">See AskDwell in<br/><span class="gradient-text">action</span></h2>
+
+      <div class="demo-tabs fade-in" id="demo-tabs-tenant">
+        <button class="demo-tab active" data-scenario="maintenance">🔧 Maintenance</button>
+        <button class="demo-tab" data-scenario="lease">📋 Lease Questions</button>
+        <button class="demo-tab" data-scenario="rent">💳 Rent Payment</button>
+        <button class="demo-tab" data-scenario="emergency">🚨 Emergency</button>
+        <button class="demo-tab" data-scenario="pm_balances">💰 Unpaid Balances</button>
+        <button class="demo-tab" data-scenario="pm_maintenance">📋 Work Orders</button>
+      </div>
+
+      <div class="demo-window fade-in">
+        <div class="demo-window-header">
+          <div class="mockup-dots"><span></span><span></span><span></span></div>
+          <span class="demo-window-title">AskDwell</span>
+          <span class="mockup-status">● Live</span>
+        </div>
+        <div class="demo-chat" id="demo-chat">
+          <!-- filled by JS -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS — SIMPLE SETUP STEPS -->
+  <section class="how-it-works" id="how-it-works" style="padding-top:0">
+    <div class="container">
+      <div class="section-label fade-in">Simple Setup</div>
+      <h2 class="section-title fade-in">Up and running in<br/><span class="gradient-text">less than a week</span></h2>
+      <div class="steps">
+        <div class="step fade-in">
+          <div class="step-number">01</div>
+          <div class="step-content">
+            <h3>Connect Your Property</h3>
+            <p>Integrate with Buildium, Google Workspace, and your communication channels in minutes. No technical expertise required.</p>
+            <div class="step-integrations">
+              <span>Buildium</span>
+              <span>Gmail</span>
+              <span>WhatsApp</span>
+              <span>Discord</span>
+              <span>+ more</span>
+            </div>
+          </div>
+          <div class="step-visual step-visual-1">
+            <div class="step-icon">🔌</div>
+          </div>
+        </div>
+        <div class="step-connector"></div>
+        <div class="step fade-in">
+          <div class="step-number">02</div>
+          <div class="step-content">
+            <h3>Configure Your Agent</h3>
+            <p>Set your preferences, workflows, and escalation rules. AskDwell learns your properties and adapts to your management style.</p>
+            <div class="step-integrations">
+              <span>Custom Rules</span>
+              <span>Auto-Escalation</span>
+              <span>Templates</span>
+            </div>
+          </div>
+          <div class="step-visual step-visual-2">
+            <div class="step-icon">⚙️</div>
+          </div>
+        </div>
+        <div class="step-connector"></div>
+        <div class="step fade-in">
+          <div class="step-number">03</div>
+          <div class="step-content">
+            <h3>Sit Back & Scale</h3>
+            <p>AskDwell handles daily operations around the clock. You get clean summaries and only the decisions that truly need you.</p>
+            <div class="step-integrations">
+              <span>24/7 Coverage</span>
+              <span>Real-time Reports</span>
+              <span>Infinite Scale</span>
+            </div>
+          </div>
+          <div class="step-visual step-visual-3">
+            <div class="step-icon">🚀</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  
+
+  <!-- TESTIMONIALS -->
+  <section class="testimonials" id="testimonials">
+    <div class="container">
+      <div class="section-label fade-in">Customer Stories</div>
+      <h2 class="section-title fade-in">Trusted by property managers <span class="gradient-text">and their tenants</span></h2>
+
+      <!-- COLLAB CLIENT HIGHLIGHT -->
+      <div class="client-highlight fade-in">
+        <div class="client-highlight-header">
+          <img src="https://cdn.prod.website-files.com/680617eb8dda01ba6e6b1623/680617eb8dda01ba6e6b1721_Qian%20Wang2.png" alt="Qian Wang" class="client-highlight-photo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"/>
+          <div class="client-highlight-photo-fallback" style="display:none;width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,#FD451E,#FF8C5A);align-items:center;justify-content:center;font-size:22px;font-weight:900;color:white;flex-shrink:0;">QW</div>
+          <div class="client-highlight-name">
+            <strong>Collab Home</strong>
+            <span>$170 million+ AUM · 4 markets: Berkeley, CA; Boston, MA; Houston, TX; New Brunswick, NJ</span>
+          </div>
+        </div>
+        <div class="client-highlight-stats">
+          <div class="client-stat">
+            <div class="client-stat-num">40%</div>
+            <div class="client-stat-label">Tenant satisfaction increase in month 1</div>
+          </div>
+          <div class="client-stat">
+            <div class="client-stat-num">15+ hrs</div>
+            <div class="client-stat-label">Team time saved per week</div>
+          </div>
+          <div class="client-stat">
+            <div class="client-stat-num">Same-day</div>
+            <div class="client-stat-label">Maintenance resolution (vs. days before)</div>
+          </div>
+          <div class="client-stat">
+            <div class="client-stat-num">24/7</div>
+            <div class="client-stat-label">Tenant support coverage</div>
+          </div>
+        </div>
+        <blockquote class="client-highlight-quote">
+          "AskDwell isn't just a tool — it's like having an operations team that never sleeps. We rolled it out across our Berkeley portfolio and the results were immediate."
+          <cite>— Qian Wang, Founder &amp; EVP, Collab Home</cite>
+        </blockquote>
+      </div>
+
+      <!-- TESTIMONIAL CARDS -->
+      <div class="testimonials-grid">
+
+        <!-- Misty Branch -->
+        <div class="testimonial-card fade-in">
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-text">"I used to spend half my day fielding tenant calls. AskDwell handles lease questions, maintenance scheduling, and rent status checks automatically. My team reclaimed 15+ hours per week — and tenants get instant answers even at 2AM."</p>
+          <div class="testimonial-author">
+            <img src="misty-branch.png" alt="Misty Branch" width="44" height="44" style="width:44px;height:44px;border-radius:50%;object-fit:cover;flex-shrink:0;" class="testimonial-photo"/>
+            <div>
+              <strong>Misty Branch</strong>
+              <span>Property Operations Manager, Collab Home</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Aileen Lai -->
+        <div class="testimonial-card fade-in">
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-text">"We piloted AskDwell across 3 properties before rolling it out portfolio-wide. Zero missed vendor appointments since we deployed. The maintenance scheduling and tenant communication automation is genuinely flawless."</p>
+          <div class="testimonial-author">
+            <img src="https://cdn.prod.website-files.com/680617eb8dda01ba6e6b1623/680617eb8dda01ba6e6b1722_Aileen%20Lai2.png" alt="Aileen Lai" width="44" height="44" style="width:44px;height:44px;border-radius:50%;object-fit:cover;flex-shrink:0;" class="testimonial-photo"/>
+            <div>
+              <strong>Aileen Lai</strong>
+              <span>CEO, Collab Home</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tenant 1 — Sarah K. -->
+        <div class="testimonial-card testimonial-card-tenant fade-in">
+          <div class="testimonial-tenant-badge">🏠 Verified Tenant</div>
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-text">"I messaged AskDwell at midnight about a broken heater and had a repair scheduled by morning. It felt like having a building manager who's always available. Honestly changed how I feel about renting."</p>
+          <div class="testimonial-author">
+            <img src="sarah-k.jpg" alt="Sarah K." width="44" height="44" style="width:44px;height:44px;border-radius:50%;object-fit:cover;flex-shrink:0;" />
+            <div>
+              <strong>Sarah K.</strong>
+              <span>Tenant, Collab Oxford Property, Berkeley</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tenant 2 — Marcus T. -->
+        <div class="testimonial-card testimonial-card-tenant fade-in">
+          <div class="testimonial-tenant-badge">🏠 Verified Tenant</div>
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-text">"Checking my lease terms, paying rent, even finding a good restaurant nearby — AskDwell handles it all. It recommended a laundry pickup service I never would have found on my own. This is what renting in 2026 should feel like."</p>
+          <div class="testimonial-author">
+            <img src="marcus-t.jpg" alt="Marcus T." width="44" height="44" style="width:44px;height:44px;border-radius:50%;object-fit:cover;flex-shrink:0;" />
+            <div>
+              <strong>Marcus T.</strong>
+              <span>Tenant, Collab Home Community</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section" id="demo" style="padding-bottom:60px;">
+    <div class="cta-bg">
+      <div class="cta-orb cta-orb-1"></div>
+      <div class="cta-orb cta-orb-2"></div>
+    </div>
+    <div class="container">
+      <div class="cta-content fade-in">
+        <h2>Ready to modernize your<br/><span class="gradient-text">property management?</span></h2>
+        <p>Book a 30-minute demo and see AskDwell handle your toughest property ops challenges — live.</p>
+      </div>
+      <!-- Calendly inline widget begin -->
+      <div style="margin-top:32px;">
+        <div class="calendly-inline-widget" data-url="https://calendly.com/d/cytg-dvn-xdn?hide_gdpr_banner=1&background_color=1a1a1a&text_color=f97b4e&primary_color=f97b4e" style="min-width:320px;height:700px;"></div>
+        <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
+      </div>
+      <!-- Calendly inline widget end -->
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="nav-logo">
+            <svg height="36" viewBox="0 0 220 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="AskDwell">
+              <path d="M4 42 V24 L22 6 L40 24 V42 Z" fill="none" stroke="#FD451E" stroke-width="3" stroke-linejoin="round"/>
+              <rect x="15" y="30" width="14" height="12" fill="#FD451E"/>
+              <text x="52" y="31" font-family="Inter, sans-serif" font-weight="900" font-size="24" fill="white">Ask</text>
+              <text x="104" y="31" font-family="Inter, sans-serif" font-weight="900" font-size="24" fill="#FD451E">Dwell</text>
+            </svg>
+          </div>
+          <p>AI-native property management for the modern era.</p>
+        </div>
+        <div class="footer-links">
+          <div class="footer-col">
+            <h4>Product</h4>
+            <a href="#features">Features</a>
+            <a href="#demo-section">How It Works</a>
+            <a href="#testimonials">Customer Stories</a>
+            <a href="#demo">Request Demo</a>
+          </div>
+          <div class="footer-col">
+            <h4>Company</h4>
+            <a href="about.html">About AskDwell</a>
+            <a href="mailto:hello@askdwell.ai">Contact</a>
+          </div>
+          <div class="footer-col">
+            <h4>Legal</h4>
+            <a href="privacy.html">Privacy Policy</a>
+            <a href="terms.html">Terms of Service</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 AskDwell · <a href="mailto:hello@askdwell.ai" style="color:inherit;">hello@askdwell.ai</a> · All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Test build badge (shown only with ?test=1) -->
+  <div id="test-badge" style="display:none; position:fixed; bottom:16px; left:16px; background:#1B2A4A; color:#4ECDC4; border:1px solid #4ECDC4; padding:6px 12px; border-radius:20px; font-size:12px; font-family:monospace; z-index:9999;">🧪 Test · askdwell-rebrand</div>
+
+  <script src="script.js?v=20260530b"></script>
 </body>
 </html>
