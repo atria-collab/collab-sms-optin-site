@@ -215,26 +215,23 @@ function clearDemoTimers() {
 
 function appendMsg(chatEl, msg) {
   const div = document.createElement('div');
-  div.className = `demo-msg ${msg.role} demo-msg-enter`;
+  div.className = `demo-msg ${msg.role}`;
   div.innerHTML = `
     <div class="demo-avatar">${msg.avatar}</div>
     <div class="demo-bubble">${msg.text}</div>
   `;
   chatEl.appendChild(div);
-  // Trigger enter animation on next frame
-  setTimeout(() => div.classList.add('demo-msg-visible'), 20);
   chatEl.scrollTop = chatEl.scrollHeight;
 }
 
 function showTyping(chatEl) {
   const div = document.createElement('div');
-  div.className = 'demo-msg ai demo-msg-typing demo-msg-enter';
+  div.className = 'demo-msg ai demo-msg-typing';
   div.innerHTML = `
     <div class="demo-avatar">✦</div>
     <div class="demo-bubble demo-typing-bubble"><span></span><span></span><span></span></div>
   `;
   chatEl.appendChild(div);
-  setTimeout(() => div.classList.add('demo-msg-visible'), 20);
   chatEl.scrollTop = chatEl.scrollHeight;
   return div;
 }
