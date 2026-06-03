@@ -222,7 +222,7 @@ function appendMsg(chatEl, msg) {
   `;
   chatEl.appendChild(div);
   // Trigger enter animation on next frame
-  requestAnimationFrame(() => requestAnimationFrame(() => div.classList.add('demo-msg-visible')));
+  setTimeout(() => div.classList.add('demo-msg-visible'), 20);
   chatEl.scrollTop = chatEl.scrollHeight;
 }
 
@@ -234,7 +234,7 @@ function showTyping(chatEl) {
     <div class="demo-bubble demo-typing-bubble"><span></span><span></span><span></span></div>
   `;
   chatEl.appendChild(div);
-  requestAnimationFrame(() => requestAnimationFrame(() => div.classList.add('demo-msg-visible')));
+  setTimeout(() => div.classList.add('demo-msg-visible'), 20);
   chatEl.scrollTop = chatEl.scrollHeight;
   return div;
 }
