@@ -113,7 +113,95 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   });
 });
 
-// Hero mockup is static — no JS cycling needed
+// ---- HERO CHAT ANIMATION ----
+// Cycles through a property manager Q&A loop in the hero mockup window
+(function () {
+  const heroChatEl = document.getElementById('hero-chat');
+  if (!heroChatEl) return;
+
+  const heroQA = [
+    {
+      ai: "3 units outstanding: Oxford #204 ($1,200), Oxford #312 ($800), College Ave #1 ($950). Total: $2,950. Send payment reminders now? 📋",
+      user: "Yes. Any open maintenance requests?"
+    },
+    {
+      ai: "Reminders sent ✅ — 2 open requests: Unit 305 leaky faucet (plumber tmrw 10AM) and Unit 108 HVAC (vendor notified, ETA Friday). I'll update you when resolved. 🔧",
+      user: "Any new leasing leads today?"
+    },
+    {
+      ai: "3 new leads from Apartments.com — welcome replies sent to all. Showing booked for Sarah Chen (2BR, June 1st) for Thursday 2PM. 🏠",
+      user: "What's our current occupancy rate?"
+    },
+    {
+      ai: "96.2% occupied — 25 of 26 units. Unit 301 turnover in progress, ready ~June 15th. On track for 98% by Q3. 📊",
+      user: "Which tenants have unpaid balances?"
+    }
+  ];
+
+  let heroSeqIdx = 0;
+  const HERO_MAX = 5;
+
+  function heroTypingRow() {
+    return heroChatEl.querySelector('.hero-typing-row');
+  }
+
+  function heroFadeIn(el, fromRight) {
+    el.style.opacity = '0';
+    el.style.transform = fromRight ? 'translateX(10px)' : 'translateY(6px)';
+    el.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      el.style.opacity = '1';
+      el.style.transform = 'translateY(0)';
+    }));
+  }
+
+  function heroAddMsg(cls, innerHtml, fromRight) {
+    const div = document.createElement('div');
+    div.className = 'chat-msg ' + cls;
+    div.innerHTML = innerHtml;
+    heroChatEl.insertBefore(div, heroTypingRow());
+    heroFadeIn(div, fromRight);
+    // Trim oldest when over limit
+    const all = heroChatEl.querySelectorAll('.chat-msg:not(.hero-typing-row)');
+    if (all.length > HERO_MAX) {
+      const oldest = all[0];
+      oldest.style.transition = 'opacity 0.3s ease';
+      oldest.style.opacity = '0';
+      setTimeout(() => oldest.remove(), 300);
+    }
+    heroChatEl.scrollTop = heroChatEl.scrollHeight;
+  }
+
+  function heroShowTyping() {
+    const tr = heroTypingRow();
+    if (tr) { tr.style.display = 'flex'; heroChatEl.scrollTop = heroChatEl.scrollHeight; }
+  }
+
+  function heroHideTyping() {
+    const tr = heroTypingRow();
+    if (tr) tr.style.display = 'none';
+  }
+
+  function heroRunCycle() {
+    const qa = heroQA[heroSeqIdx % heroQA.length];
+    heroSeqIdx++;
+    // Show typing → AI response
+    heroShowTyping();
+    setTimeout(() => {
+      heroHideTyping();
+      heroAddMsg('ai', '<div class="chat-avatar">✦</div><div class="chat-bubble">' + qa.ai + '</div>', false);
+      // Then user's next question
+      setTimeout(() => {
+        heroAddMsg('user', '<div class="chat-bubble">' + qa.user + '</div><div class="chat-avatar user-av">PM</div>', true);
+        // Loop
+        setTimeout(heroRunCycle, 1600);
+      }, 2800);
+    }, 1800);
+  }
+
+  // Start after page settles
+  setTimeout(heroRunCycle, 1200);
+})();
 
 // ---- STAT COUNTER ANIMATION ----
 function animateCounter(el, target, suffix = '', prefix = '') {
