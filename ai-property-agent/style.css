@@ -639,3 +639,9 @@ body {
 .audience-btn.active {
   background: var(--primary); border-color: var(--primary); color: white;
 }
+
+/* ---- Calendly embed responsive height ---- */
+#calendly-widget { height: 1000px; }
+@media (max-width: 600px) {
+  #calendly-widget { height: 1100px; }
+}
