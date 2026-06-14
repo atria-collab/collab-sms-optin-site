@@ -418,12 +418,11 @@ body {
 
 .demo-chat {
   padding: 24px;
-  min-height: 320px;
+  height: 420px;
   display: flex;
   flex-direction: column;
   gap: 16px;
   overflow-y: auto;
-  max-height: 420px;
 }
 
 .demo-msg {
