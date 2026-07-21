@@ -405,3 +405,51 @@ if (demoWindow) {
     document.title = document.title + ' (Test)';
   }
 })();
+
+// ============================================
+// DEMO BOOKING FORM — no reCAPTCHA
+// ============================================
+async function submitDemoForm(e) {
+  e.preventDefault();
+  const form = document.getElementById('demo-form');
+  const btn = document.getElementById('demo-submit-btn');
+  const msg = document.getElementById('demo-form-msg');
+  const data = Object.fromEntries(new FormData(form));
+
+  btn.disabled = true;
+  btn.textContent = 'Sending…';
+
+  try {
+    // Try Formspree endpoint first (update FORMSPREE_ID when available)
+    const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xpwrjnab';
+    const res = await fetch(FORMSPREE_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    if (res.ok) {
+      form.style.display = 'none';
+      msg.style.display = 'block';
+      msg.style.background = 'rgba(92,196,137,0.12)';
+      msg.style.color = '#5cc489';
+      msg.style.border = '1px solid rgba(92,196,137,0.3)';
+      msg.innerHTML = '✅ Thanks! We\'ll reach out within 1 business day to schedule your demo.';
+    } else {
+      throw new Error('Server error');
+    }
+  } catch (err) {
+    // Fallback: open mailto with prefilled subject/body
+    const subject = encodeURIComponent('AskDwell Demo Request');
+    const body = encodeURIComponent(
+      `Name: ${data.name || ''}\nEmail: ${data.email || ''}\nCompany: ${data.company || ''}\nPhone: ${data.phone || ''}\n\nMessage:\n${data.message || ''}`
+    );
+    window.location.href = `mailto:hello@askdwell.ai?subject=${subject}&body=${body}`;
+    btn.disabled = false;
+    btn.textContent = 'Request a Demo →';
+    msg.style.display = 'block';
+    msg.style.background = 'rgba(249,123,78,0.12)';
+    msg.style.color = '#f97b4e';
+    msg.style.border = '1px solid rgba(249,123,78,0.3)';
+    msg.innerHTML = '📧 Your email client has opened with the details pre-filled. Hit Send to reach us!';
+  }
+}
